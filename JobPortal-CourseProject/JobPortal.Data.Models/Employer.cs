@@ -7,6 +7,7 @@
     {
         public Employer()
         {
+            this.Id = Guid.NewGuid();
             this.JobOffers = new HashSet<Job>();
         }
 
@@ -27,7 +28,7 @@
 
         public Guid UserId { get; set; }
 
-        public virtual ApplicationUser ApplicationUser { get; set; } = null!;
+        public virtual ApplicationUser User { get; set; } = null!;
 
         public virtual ICollection<Job> JobOffers { get; set; }
     }

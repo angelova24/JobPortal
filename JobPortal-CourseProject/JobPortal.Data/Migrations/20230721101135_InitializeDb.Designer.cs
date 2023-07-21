@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobPortal.Data.Migrations
 {
     [DbContext(typeof(JobPortalDbContext))]
-    [Migration("20230719214249_InitializeDb")]
+    [Migration("20230721101135_InitializeDb")]
     partial class InitializeDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,8 +129,10 @@ namespace JobPortal.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ApplicationUserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CompanyAddress")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -147,7 +149,7 @@ namespace JobPortal.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Employers");
                 });
@@ -346,13 +348,13 @@ namespace JobPortal.Data.Migrations
 
             modelBuilder.Entity("JobPortal.Data.Models.Employer", b =>
                 {
-                    b.HasOne("JobPortal.Data.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("JobPortal.Data.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("JobPortal.Data.Models.Job", b =>
