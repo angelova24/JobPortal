@@ -1,5 +1,7 @@
 using JobPortal.Data;
 using JobPortal.Data.Models;
+using JobPortal.Sevices.Data;
+using JobPortal.Sevices.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     .AddEntityFrameworkStores<JobPortalDbContext>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IJobService, JobService>();
+builder.Services.AddScoped<IEmployerService, EmployerService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 

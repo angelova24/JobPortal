@@ -29,6 +29,11 @@
             await this.dbContext.SaveChangesAsync();
         }
 
+        public Task CreateAsync(string userId, BecomeEmployerFormModel model)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> EmployerExistsByPhoneNumberAsync(string phoneNumber)
         {
             var result = await this.dbContext.Employers.AnyAsync(e => e.PhoneNumber == phoneNumber);
@@ -41,6 +46,18 @@
             var result = await this.dbContext.Employers.AnyAsync(e => e.UserId.ToString() == userId);
 
             return result;
+        }
+
+        public async Task<string?> GetAgentIdByUserIdAsync(string userId)
+        {
+            var agent = await dbContext.Employers.FirstOrDefaultAsync(e => e.UserId.ToString() == userId);
+
+            if (agent == null)
+            {
+                return null;
+            }
+
+            return agent.Id.ToString();
         }
     }
 }

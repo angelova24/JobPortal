@@ -8,6 +8,8 @@
 
         Task<bool> EmployerExistsByPhoneNumberAsync(string phoneNumber);
 
-        Task Create(string userId, BecomeEmployerFormModel model);
+        Task CreateAsync(string userId, BecomeEmployerFormModel model);
+
+        Task<string?> GetAgentIdByUserIdAsync(string userId);
     }
 }

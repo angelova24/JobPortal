@@ -1,0 +1,21 @@
+﻿@model IEnumerable<JobViewModel>
+@{
+    ViewBag.Title = "All Jobs";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="row">
+    @foreach (var job in Model)
+    {
+        <div class="alert alert-primary mb-3">
+            <div class="text-lg fw-bold">@job.Title</div>
+            <div>@job.Salary</div>
+            <div>@job.CompanyName</div>
+            <div>@job.CompanyAddress</div>
+            <a class="btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@job.Id">Details</a>
+        </div>
+    }
+</div>
+

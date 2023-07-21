@@ -55,7 +55,7 @@
 
             try
             {
-                await this.employerService.Create(userId, model);
+                await this.employerService.CreateAsync(userId, model);
             }
             catch (Exception)
             {
