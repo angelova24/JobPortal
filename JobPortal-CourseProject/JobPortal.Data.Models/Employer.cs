@@ -18,6 +18,10 @@
         public string CompanyName { get; set; } = null!;
 
         [Required]
+        [StringLength(CompanyAddressMaxLength, MinimumLength = CompanyAddressMinLength)]
+        public string CompanyAddress { get; set; } = null!;
+
+        [Required]
         [StringLength(PhoneNumberMaxLenght, MinimumLength = PhoneNumberMinLenght)]
         public string PhoneNumber { get; set;} = null!;
 

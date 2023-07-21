@@ -25,6 +25,9 @@
             public const int CompanyNameMinLength = 2;
             public const int CompanyNameMaxLength = 50;
 
+            public const int CompanyAddressMinLength = 2;
+            public const int CompanyAddressMaxLength = 50;
+
             public const int PhoneNumberMinLenght = 7;
             public const int PhoneNumberMaxLenght = 15;
         }
