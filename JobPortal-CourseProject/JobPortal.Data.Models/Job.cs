@@ -27,8 +27,7 @@
         [StringLength(RequirementsMaxLenght, MinimumLength = RequirementsMinLenght)]
         public string Requirements { get; set; } = null!;
 
-        [Required]
-        public decimal Salary { get; set; }
+        public int? Salary { get; set; }
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
