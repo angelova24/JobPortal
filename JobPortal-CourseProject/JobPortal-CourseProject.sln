@@ -13,9 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{9FDF80F1-9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobPortal.Data", "JobPortal.Data\JobPortal.Data.csproj", "{9A073FFC-08FE-4231-975E-19A3D17450C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobPortal.Data.Models", "JobPortal.Data.Models\JobPortal.Data.Models.csproj", "{9E04F0A6-44FA-46BB-BE04-D107FCBEC738}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobPortal.Data.Models", "JobPortal.Data.Models\JobPortal.Data.Models.csproj", "{9E04F0A6-44FA-46BB-BE04-D107FCBEC738}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobPortal.Web.ViewModels", "JobPortal.Web.ViewModels\JobPortal.Web.ViewModels.csproj", "{81B79728-E8CF-4001-95F0-B90147FF8AB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobPortal.Web.ViewModels", "JobPortal.Web.ViewModels\JobPortal.Web.ViewModels.csproj", "{81B79728-E8CF-4001-95F0-B90147FF8AB0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{403A6846-5702-49AD-935F-A99E824B5645}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobPortal.Sevices.Data", "JobPortal.Sevices.Data\JobPortal.Sevices.Data.csproj", "{BC2A6BC5-690A-42EB-84D0-4EE915E728F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobPortal.Web.Infrastructure", "JobPortal.Web.Infrastructure\JobPortal.Web.Infrastructure.csproj", "{8608396C-616A-434D-B8B1-C53795175F4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +49,14 @@ Global
 		{81B79728-E8CF-4001-95F0-B90147FF8AB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81B79728-E8CF-4001-95F0-B90147FF8AB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81B79728-E8CF-4001-95F0-B90147FF8AB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC2A6BC5-690A-42EB-84D0-4EE915E728F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC2A6BC5-690A-42EB-84D0-4EE915E728F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC2A6BC5-690A-42EB-84D0-4EE915E728F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC2A6BC5-690A-42EB-84D0-4EE915E728F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8608396C-616A-434D-B8B1-C53795175F4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8608396C-616A-434D-B8B1-C53795175F4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8608396C-616A-434D-B8B1-C53795175F4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8608396C-616A-434D-B8B1-C53795175F4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +66,8 @@ Global
 		{9A073FFC-08FE-4231-975E-19A3D17450C6} = {9FDF80F1-99AE-4206-B4F2-FE8F473D5D52}
 		{9E04F0A6-44FA-46BB-BE04-D107FCBEC738} = {9FDF80F1-99AE-4206-B4F2-FE8F473D5D52}
 		{81B79728-E8CF-4001-95F0-B90147FF8AB0} = {B9A91E46-B77E-4FBD-A3F2-62AB1154E755}
+		{BC2A6BC5-690A-42EB-84D0-4EE915E728F5} = {403A6846-5702-49AD-935F-A99E824B5645}
+		{8608396C-616A-434D-B8B1-C53795175F4E} = {B9A91E46-B77E-4FBD-A3F2-62AB1154E755}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0EDEB7E9-CA69-4B01-A7E9-0E75D0EC8BCF}

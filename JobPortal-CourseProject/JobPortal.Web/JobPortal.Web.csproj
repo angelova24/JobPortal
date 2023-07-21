@@ -13,12 +13,15 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.15" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.15" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\JobPortal.Common\JobPortal.Common.csproj" />
     <ProjectReference Include="..\JobPortal.Data.Models\JobPortal.Data.Models.csproj" />
     <ProjectReference Include="..\JobPortal.Data\JobPortal.Data.csproj" />
+    <ProjectReference Include="..\JobPortal.Sevices.Data\JobPortal.Sevices.Data.csproj" />
+    <ProjectReference Include="..\JobPortal.Web.Infrastructure\JobPortal.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\JobPortal.Web.ViewModels\JobPortal.Web.ViewModels.csproj" />
   </ItemGroup>
 
