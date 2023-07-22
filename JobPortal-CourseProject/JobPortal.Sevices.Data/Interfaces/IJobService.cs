@@ -9,5 +9,7 @@
         Task CreateAsync(string employerId, JobAddFormModel model);
 
         Task<JobDetailsViewModel?> GetJobByIdAsync(string jobId);
+
+        Task<bool> ExistsByIdAsync(string jobId);
     }
 }

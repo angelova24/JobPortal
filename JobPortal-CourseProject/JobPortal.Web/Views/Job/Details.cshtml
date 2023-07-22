@@ -14,6 +14,8 @@
         <div>@Model.EmployerName</div>
         <div>@Model.CompanyName</div>
         <div>@Model.CompanyAddress</div>
-        <a class="btn btn-primary mt-1" asp-controller="Job" asp-action="Candidate" asp-route-id="@Model.Id">Candidate</a>
+        <form asp-action="ApplyForJob" asp-controller="ApplicationUser" asp-route-jobId="@Model.Id">
+            <button class="btn btn-primary mt-1" name="button">Apply</button>
+        </form>
     </div>
 </div>

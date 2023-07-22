@@ -32,6 +32,13 @@
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<bool> ExistsByIdAsync(string jobId)
+        {
+            var result = await this.dbContext.Jobs.AnyAsync(j => j.Id.ToString() == jobId);
+
+            return result;
+        }
+
         public async Task<IEnumerable<JobViewModel>> GetAllJobsAsync()
         {
             var allJobs = await this.dbContext.Jobs
