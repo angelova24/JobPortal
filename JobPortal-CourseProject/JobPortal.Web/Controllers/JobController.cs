@@ -84,5 +84,19 @@
 
             return RedirectToAction("All", "Job");
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(string id)
+        {
+            var model = await jobService.GetJobByIdAsync(id);
+
+            if (model == null)
+            {
+                return RedirectToAction("All", "Job");
+            }
+
+            return View(model);
+        }
     }
 }

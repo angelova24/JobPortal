@@ -1,0 +1,19 @@
+﻿@model JobDetailsViewModel
+
+
+<div class="row">
+    <div class="alert alert-info mb-3">
+        <div class="text-lg fw-bold text-center">@Model.Title</div>
+        <div class="fw-bold fst-italic">Description</div>
+        <div>@Model.Description</div>
+        <div class="fw-bold fst-italic">Requirements</div>
+        <div>@Model.Requirements</div>
+        <div class="fw-bold fst-italic">Salary</div>
+        <div>@Model.Salary</div>
+        <div class="fw-bold fst-italic">Employer info</div>
+        <div>@Model.EmployerName</div>
+        <div>@Model.CompanyName</div>
+        <div>@Model.CompanyAddress</div>
+        <a class="btn btn-primary mt-1" asp-controller="Job" asp-action="Candidate" asp-route-id="@Model.Id">Candidate</a>
+    </div>
+</div>

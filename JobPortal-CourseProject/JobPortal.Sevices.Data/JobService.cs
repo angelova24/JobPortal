@@ -48,5 +48,29 @@
 
             return allJobs;
         }
+
+        public async Task<JobDetailsViewModel?> GetJobByIdAsync(string jobId)
+        {
+            var job = await dbContext.Jobs.Include(j => j.Employer).ThenInclude(e => e.User).FirstOrDefaultAsync(j => j.Id.ToString() == jobId);
+
+            if (job == null)
+            {
+                return null;
+            }
+
+            var jobModel = new JobDetailsViewModel()
+            {
+                Id = job.Id.ToString(),
+                Title = job.Title,
+                Description = job.Description,
+                Requirements = job.Requirements,
+                Salary = job.Salary,
+                EmployerName = job.Employer.User.UserName,
+                CompanyName = job.Employer.CompanyName,
+                CompanyAddress = job.Employer.CompanyAddress
+            };
+
+            return jobModel;
+        }
     }
 }

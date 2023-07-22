@@ -7,5 +7,7 @@
         Task<IEnumerable<JobViewModel>> GetAllJobsAsync();
 
         Task CreateAsync(string employerId, JobAddFormModel model);
+
+        Task<JobDetailsViewModel?> GetJobByIdAsync(string jobId);
     }
 }
