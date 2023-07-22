@@ -7,9 +7,9 @@
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid();
-            this.JobApplications = new HashSet<Job>();
+            this.JobApplications = new HashSet<UserJobs>();
         }
 
-        public ICollection<Job> JobApplications { get; set; }
+        public ICollection<UserJobs> JobApplications { get; set; }
     }
 }

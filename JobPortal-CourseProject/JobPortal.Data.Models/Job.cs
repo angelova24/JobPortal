@@ -9,7 +9,7 @@
         public Job()
         {
             this.Id = Guid.NewGuid();
-            this.Candidates = new HashSet<ApplicationUser>();
+            this.Candidates = new HashSet<UserJobs>();
         }
 
         [Key]
@@ -39,6 +39,6 @@
 
         public virtual Employer Employer { get; set; } = null!;
 
-        public ICollection<ApplicationUser> Candidates { get; set; }
+        public ICollection<UserJobs> Candidates { get; set; }
     }
 }

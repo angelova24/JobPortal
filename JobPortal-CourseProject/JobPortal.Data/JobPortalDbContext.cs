@@ -19,6 +19,8 @@
 
         public DbSet<Job> Jobs { get; set; } = null!;
 
+        public DbSet<UserJobs> UserJobs { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             var configAssembly = Assembly.GetAssembly(typeof(JobPortalDbContext)) ??
