@@ -10,11 +10,13 @@
     {
         private readonly IApplicationUserService applicationUserService;
         private readonly IJobService jobService;
+        private readonly IEmployerService employerService;
 
-        public ApplicationUserController(IApplicationUserService applicationUserService, IJobService jobService)
+        public ApplicationUserController(IApplicationUserService applicationUserService, IJobService jobService, IEmployerService employerService)
         {
             this.applicationUserService = applicationUserService;
             this.jobService = jobService;
+            this.employerService = employerService;
         }
 
         [HttpPost]
@@ -27,18 +29,19 @@
                 return BadRequest();
             }
 
-            var userId = this.User.GetId();
-            var alreadyApplied = await applicationUserService.HasAppliedForThatJobAsync(userId!, jobId);
+            var userId = this.User.GetId()!;
+            var alreadyApplied = await applicationUserService.HasAppliedForThatJobAsync(userId, jobId);
+            var isAuthorOfJob = await employerService.IsAuthorOfJobAsync(userId, jobId);
             
-            if (alreadyApplied)
+            if (alreadyApplied || isAuthorOfJob)
             {
                 return RedirectToAction("Index", "Home");
             }
 
             try
             {
-                await applicationUserService.ApplyForJobAsync(userId!, jobId);
-                return RedirectToAction("Mine", "Job");
+                await applicationUserService.ApplyForJobAsync(userId, jobId);
+                return RedirectToAction("MyApplications", "ApplicationUser");
             }
             catch (Exception e)
             {

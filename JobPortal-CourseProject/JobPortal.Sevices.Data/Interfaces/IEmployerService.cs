@@ -14,5 +14,7 @@
         Task<string?> GetEmployerIdByUserIdAsync(string userId);
         
         Task<IEnumerable<JobViewModel>> GetAllJobsByEmployerIdAsync(string employerId);
+
+        Task<bool> IsAuthorOfJobAsync(string employerId, string jobId);
     }
 }
