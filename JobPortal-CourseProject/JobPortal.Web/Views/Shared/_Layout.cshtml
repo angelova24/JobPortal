@@ -1,4 +1,11 @@
-﻿@using static JobPortal.Common.GeneralApplicationConstants;
+﻿@using JobPortal.Sevices.Data.Interfaces;
+@using JobPortal.Web.Infrastructure.Extensions;
+@using static JobPortal.Common.GeneralApplicationConstants;
+
+@inject IEmployerService EmployerService
+@{
+    bool isUserEmployer = await EmployerService.EmployerExistsByUserIdAsync(this.User.GetId());
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,12 +36,15 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="ApplicationUser" asp-action="MyApplications">My Applications</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Employer" asp-action="MyJobOffers">My Job Offers</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Add">Add Job</a>
-                            </li>
+                            @if (isUserEmployer)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Employer" asp-action="MyJobOffers">My Job Offers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Add">Add Job</a>
+                                </li>
+                            }
                         }
                     </ul>
                     <partial name="_LoginPartial" />
