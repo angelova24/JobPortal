@@ -47,5 +47,16 @@
             }
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MyApplications()
+        {
+            var userId = this.User.GetId()!;
+
+            var userApplicationJobs = await applicationUserService.GetAllJobsByCandidateIdAsync(userId);
+
+            return View(userApplicationJobs);
+        }
+
     }
 }
