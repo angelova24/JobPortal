@@ -75,7 +75,7 @@
 
             try
             {
-                var employerId = await this.employerService.GetAgentIdByUserIdAsync(this.User.GetId()!);
+                var employerId = await this.employerService.GetEmployerIdByUserIdAsync(this.User.GetId()!);
                 await this.jobService.CreateAsync(employerId!, model);
             }
             catch (Exception)

@@ -19,7 +19,7 @@
         [HttpGet]
         public async Task<IActionResult> Become()
         {
-            var userId = this.User.GetId();
+            var userId = this.User.GetId()!;
             var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(userId);
 
             if (isEmployer)
@@ -33,7 +33,7 @@
         [HttpPost]
         public async Task<IActionResult> Become(BecomeEmployerFormModel model)
         {
-            var userId = this.User.GetId();
+            var userId = this.User.GetId()!;
             var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(userId);
 
             if (isEmployer)
@@ -63,6 +63,22 @@
             }
 
             return RedirectToAction("All", "Job");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyJobOffers()
+        {
+            var userId = this.User.GetId()!;
+            var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(userId);
+
+            if (!isEmployer)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var employerId = await this.employerService.GetEmployerIdByUserIdAsync(userId);
+            var jobOffers = await this.employerService.GetAllJobsByEmployerIdAsync(employerId!);
+
+            return View(jobOffers);
         }
     }
 }

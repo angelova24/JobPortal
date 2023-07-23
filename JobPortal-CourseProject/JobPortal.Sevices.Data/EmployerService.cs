@@ -4,7 +4,9 @@
     using JobPortal.Data.Models;
     using JobPortal.Sevices.Data.Interfaces;
     using JobPortal.Web.ViewModels.Employer;
+    using JobPortal.Web.ViewModels.Job;
     using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public class EmployerService : IEmployerService
@@ -15,7 +17,7 @@
             this.dbContext = dbContext;
         }
 
-        public async Task Create(string userId, BecomeEmployerFormModel model)
+        public async Task CreateAsync(string userId, BecomeEmployerFormModel model)
         {
             var newEmployer = new Employer()
             {
@@ -29,10 +31,6 @@
             await this.dbContext.SaveChangesAsync();
         }
 
-        public Task CreateAsync(string userId, BecomeEmployerFormModel model)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<bool> EmployerExistsByPhoneNumberAsync(string phoneNumber)
         {
@@ -48,16 +46,33 @@
             return result;
         }
 
-        public async Task<string?> GetAgentIdByUserIdAsync(string userId)
+        public async Task<string?> GetEmployerIdByUserIdAsync(string userId)
         {
-            var agent = await dbContext.Employers.FirstOrDefaultAsync(e => e.UserId.ToString() == userId);
+            var employer = await dbContext.Employers.FirstOrDefaultAsync(e => e.UserId.ToString() == userId);
 
-            if (agent == null)
+            if (employer == null)
             {
                 return null;
             }
 
-            return agent.Id.ToString();
+            return employer.Id.ToString();
+        }
+
+        public async Task<IEnumerable<JobViewModel>> GetAllJobsByEmployerIdAsync(string employerId)
+        {
+            var allEmployerJobs = await dbContext.Jobs
+                .Where(j => j.EmployerId.ToString() == employerId)
+                .Select(j => new JobViewModel()
+                {
+                    Id = j.Id.ToString(),
+                    Title = j.Title,
+                    Salary = j.Salary,
+                    CompanyName = j.Employer.CompanyName,
+                    CompanyAddress = j.Employer.CompanyAddress
+                })
+                .ToListAsync();
+
+            return allEmployerJobs;
         }
     }
 }

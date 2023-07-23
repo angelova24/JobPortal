@@ -1,6 +1,7 @@
 ﻿namespace JobPortal.Sevices.Data.Interfaces
 {
     using JobPortal.Web.ViewModels.Employer;
+    using JobPortal.Web.ViewModels.Job;
 
     public interface IEmployerService
     {
@@ -10,6 +11,8 @@
 
         Task CreateAsync(string userId, BecomeEmployerFormModel model);
 
-        Task<string?> GetAgentIdByUserIdAsync(string userId);
+        Task<string?> GetEmployerIdByUserIdAsync(string userId);
+        
+        Task<IEnumerable<JobViewModel>> GetAllJobsByEmployerIdAsync(string employerId);
     }
 }
