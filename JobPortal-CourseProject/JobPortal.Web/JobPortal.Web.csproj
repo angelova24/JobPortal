@@ -20,6 +20,7 @@
     <ProjectReference Include="..\JobPortal.Common\JobPortal.Common.csproj" />
     <ProjectReference Include="..\JobPortal.Data.Models\JobPortal.Data.Models.csproj" />
     <ProjectReference Include="..\JobPortal.Data\JobPortal.Data.csproj" />
+    <ProjectReference Include="..\JobPortal.Services.Data.Models\JobPortal.Services.Data.Models.csproj" />
     <ProjectReference Include="..\JobPortal.Sevices.Data\JobPortal.Sevices.Data.csproj" />
     <ProjectReference Include="..\JobPortal.Web.Infrastructure\JobPortal.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\JobPortal.Web.ViewModels\JobPortal.Web.ViewModels.csproj" />

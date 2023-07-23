@@ -2,8 +2,10 @@
 {
     using JobPortal.Data;
     using JobPortal.Data.Models;
+    using JobPortal.Services.Data.Models.Job;
     using JobPortal.Sevices.Data.Interfaces;
     using JobPortal.Web.ViewModels.Job;
+    using JobPortal.Web.ViewModels.Job.Enums;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -39,10 +41,36 @@
             return result;
         }
 
-        public async Task<IEnumerable<JobViewModel>> GetAllJobsAsync()
+        public async Task<JobsFilteredAndPagedServiceModel> GetAllJobsAsync(JobsQueryModel queryModel)
         {
-            var allJobs = await this.dbContext.Jobs
-                .OrderByDescending(j => j.CreatedOn)
+            var jobsQuery = this.dbContext.Jobs.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(queryModel.Category))
+            {
+                jobsQuery = jobsQuery.Where(j => j.Category.Name == queryModel.Category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
+            {
+                var wildcard = $"%{queryModel.SearchTerm.ToLower()}%";
+
+                jobsQuery = jobsQuery
+                    .Where(j => EF.Functions.Like(j.Title, wildcard) || 
+                                EF.Functions.Like(j.Description, wildcard) ||
+                                EF.Functions.Like(j.Requirements, wildcard));
+            }
+
+            jobsQuery = queryModel.JobSorting switch
+            {
+                JobSorting.Newest => jobsQuery.OrderByDescending(j => j.CreatedOn),
+                JobSorting.Oldest => jobsQuery.OrderBy(j => j.CreatedOn),
+                JobSorting.BestPaid => jobsQuery.OrderByDescending(j => j.Salary),
+                _ => jobsQuery.OrderByDescending(j => j.CreatedOn)
+            };
+
+            var allJobs = await jobsQuery
+                .Skip((queryModel.CurrentPage - 1) * queryModel.JobsPerPage)
+                .Take(queryModel.JobsPerPage)
                 .Select(j => new JobViewModel()
                 {
                     Id = j.Id.ToString(),
@@ -53,7 +81,13 @@
                 })
                 .ToListAsync();
 
-            return allJobs;
+            var totalJobs = jobsQuery.Count();
+
+            return new JobsFilteredAndPagedServiceModel()
+            {
+                JobsCount = totalJobs,
+                Jobs = allJobs
+            };
         }
 
         public async Task<JobDetailsViewModel?> GetJobByIdAsync(string jobId)

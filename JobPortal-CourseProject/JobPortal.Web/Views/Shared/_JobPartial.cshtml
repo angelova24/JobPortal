@@ -1,0 +1,11 @@
+﻿@model JobViewModel
+
+<div class="row">
+    <div class="alert alert-primary mb-3">
+        <div class="text-lg fw-bold">@Model.Title</div>
+        <div>@Model.Salary</div>
+        <div>@Model.CompanyName</div>
+        <div>@Model.CompanyAddress</div>
+        <a class="btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+    </div>
+</div>

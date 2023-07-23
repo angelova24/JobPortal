@@ -22,11 +22,15 @@
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery]JobsQueryModel queryModel)
         {
-            var viewModel = await this.jobService.GetAllJobsAsync();
+            var serviceModel = await this.jobService.GetAllJobsAsync(queryModel);
 
-            return View(viewModel);
+            queryModel.Jobs = serviceModel.Jobs;
+            queryModel.TotalJobs = serviceModel.JobsCount;
+            queryModel.Categories = await this.categoryService.GetAllCategoryNamesAsync();
+
+            return View(queryModel);
         }
 
         [HttpGet]

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JobViewModel>
+﻿@model JobsQueryModel
 @{
     ViewBag.Title = "All Jobs";
 }
@@ -6,16 +6,104 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="row">
-    @foreach (var job in Model)
-    {
-        <div class="alert alert-primary mb-3">
-            <div class="text-lg fw-bold">@job.Title</div>
-            <div>@job.Salary</div>
-            <div>@job.CompanyName</div>
-            <div>@job.CompanyAddress</div>
-            <a class="btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@job.Id">Details</a>
+
+<form method="get">
+    <div class="row justify-content-between">
+        <div class="form-group col">
+            <div class="form-group">
+                <label asp-for="Category"></label>
+                <select asp-for="Category" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
         </div>
+
+        <div class="form-group col">
+            <div class="form-group">
+                <label asp-for="JobsPerPage"></label>
+                <select asp-for="JobsPerPage" class="form-control">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="...">
+        </div>
+
+        <div class="form-group col">
+            <div class="form-group">
+                <label asp-for="JobSorting"></label>
+                <select asp-for="JobSorting" class="form-control">
+                    <option value="0">Newest</option>
+                    <option value="1">Oldest</option>
+                    <option value="2">Best paid</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col mt-3">
+            <div class="form-group p-2">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@{
+    int previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
     }
+
+    int maxPage = (int)Math.Ceiling((double)Model.TotalJobs / Model.JobsPerPage);
+}
+
+<div class="row my-3">
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="House"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-category="@Model.Category"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.JobSorting)"><<</a>
+    </div>
+
+    @{
+        bool shouldNextPageBeDisabled = Model.CurrentPage == maxPage ||
+        !Model.Jobs.Any();
+    }
+
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary
+           @(shouldNextPageBeDisabled ? "disabled" : string.Empty)"
+           asp-controller="House"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-category="@Model.Category"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.JobSorting)">>></a>
+    </div>
 </div>
 
+@if (!Model.Jobs.Any())
+{
+    <h2 class="text-center">No jobs found by the given criteria!</h2>
+}
+
+<div class="col">
+    @foreach (var job in Model.Jobs)
+    {
+        <partial name="_JobPartial" model="@job" />
+    }
+</div>

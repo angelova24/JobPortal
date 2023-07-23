@@ -35,5 +35,12 @@
 
             return allCategories;
         }
+
+        public async Task<IEnumerable<string>> GetAllCategoryNamesAsync()
+        {
+            var allNames = await this.dbContext.Categories.Select(c => c.Name).ToListAsync();
+
+            return allNames;
+        }
     }
 }
