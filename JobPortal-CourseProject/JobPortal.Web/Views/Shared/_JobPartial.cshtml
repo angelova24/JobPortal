@@ -7,5 +7,6 @@
         <div>@Model.CompanyName</div>
         <div>@Model.CompanyAddress</div>
         <a class="btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+        <a class="btn btn-warning mt-1" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
     </div>
 </div>
