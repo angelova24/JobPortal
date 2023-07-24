@@ -11,9 +11,11 @@
         <div class="fw-bold fst-italic">Salary</div>
         <div>@Model.Salary</div>
         <div class="fw-bold fst-italic">Employer info</div>
-        <div>@Model.EmployerName</div>
-        <div>@Model.CompanyName</div>
-        <div>@Model.CompanyAddress</div>
+        <div>@Model.EmployerInfo.Name</div>
+        <div>@Model.EmployerInfo.Email</div>
+        <div>@Model.EmployerInfo.PhoneNumber</div>
+        <div>@Model.EmployerInfo.CompanyName</div>
+        <div>@Model.EmployerInfo.CompanyAddress</div>
         <form asp-action="ApplyForJob" asp-controller="ApplicationUser" asp-route-jobId="@Model.Id">
             <button class="btn btn-primary mt-1" name="button">Apply</button>
         </form>
