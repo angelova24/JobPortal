@@ -7,7 +7,7 @@
     {
         Task<JobsFilteredAndPagedServiceModel> GetAllJobsAsync(JobsQueryModel queryModel);
 
-        Task CreateAsync(string employerId, JobAddFormModel model);
+        Task<string> CreateAndReturnIdAsync(string employerId, JobAddFormModel model);
 
         Task<JobDetailsViewModel> GetJobDetailsByIdAsync(string jobId);
 

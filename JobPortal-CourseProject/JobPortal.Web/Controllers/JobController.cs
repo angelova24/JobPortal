@@ -76,7 +76,9 @@
             try
             {
                 var employerId = await this.employerService.GetEmployerIdByUserIdAsync(this.User.GetId()!);
-                await this.jobService.CreateAsync(employerId!, model);
+                string jobId = await this.jobService.CreateAndReturnIdAsync(employerId!, model);
+                
+                return RedirectToAction("Details", "Job", new { id = jobId });
             }
             catch (Exception)
             {
@@ -85,8 +87,6 @@
 
                 return View(model);
             }
-
-            return RedirectToAction("All", "Job");
         }
 
         [HttpGet]

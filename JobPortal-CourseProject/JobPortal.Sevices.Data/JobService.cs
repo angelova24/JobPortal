@@ -19,7 +19,7 @@
             this.dbContext = dbContext;
         }
 
-        public async Task CreateAsync(string employerId, JobAddFormModel model)
+        public async Task<string> CreateAndReturnIdAsync(string employerId, JobAddFormModel model)
         {
             var newJob = new Job()
             {
@@ -33,6 +33,8 @@
 
             await this.dbContext.Jobs.AddAsync(newJob);
             await this.dbContext.SaveChangesAsync();
+
+            return newJob.Id.ToString();
         }
 
         public async Task<bool> ExistsByIdAsync(string jobId)
