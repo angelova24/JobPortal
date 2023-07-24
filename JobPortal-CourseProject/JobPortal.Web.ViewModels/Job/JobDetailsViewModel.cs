@@ -1,5 +1,7 @@
 ﻿namespace JobPortal.Web.ViewModels.Job
 {
+    using Employer;
+    
     public class JobDetailsViewModel
     {
         public string Id { get; set; } = null!;
@@ -12,10 +14,6 @@
 
         public int? Salary { get; set; }
 
-        public string EmployerName { get; set; } = null!;
-
-        public string CompanyName { get; set; } = null!;
-
-        public string CompanyAddress { get; set; } = null!;
+        public EmployerInfoViewModel EmployerInfo { get; set; } = null!;
     }
 }
