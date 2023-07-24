@@ -93,14 +93,91 @@
         [AllowAnonymous]
         public async Task<IActionResult> Details(string id)
         {
-            var model = await jobService.GetJobByIdAsync(id);
+            var jobExists = await this.jobService.ExistsByIdAsync(id);
 
-            if (model == null)
+            if (!jobExists)
+            {
+                return RedirectToAction("All", "Job");
+            }
+            
+            var model = await this.jobService.GetJobDetailsByIdAsync(id);
+
+            return View(model);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var jobExists = await this.jobService.ExistsByIdAsync(id);
+
+            if (!jobExists)
             {
                 return RedirectToAction("All", "Job");
             }
 
+            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(this.User.GetId()!);
+
+            if (!isUserEmployer)
+            {
+                return RedirectToAction("Become", "Employer");
+            }
+            
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, id);
+
+            if (!isAuthorOfJob)
+            {
+                return RedirectToAction("MyJobOffers", "Employer");
+            }
+
+            var model = await this.jobService.GetJobForEditByIdAsync(id);
+            model.Categories = await this.categoryService.GetAllAsync();
+            
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, JobAddFormModel model)
+        {
+            var jobExists = await this.jobService.ExistsByIdAsync(id);
+
+            if (!jobExists)
+            {
+                return RedirectToAction("All", "Job");
+            }
+            
+            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(this.User.GetId()!);
+
+            if (!isUserEmployer)
+            {
+                return RedirectToAction("Become", "Employer");
+            }
+            
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, id);
+
+            if (!isAuthorOfJob)
+            {
+                return RedirectToAction("MyJobOffers", "Employer");
+            }
+            
+            if (!this.ModelState.IsValid)
+            {
+                model.Categories = await this.categoryService.GetAllAsync();
+                return this.View(model);
+            }
+
+            try
+            {
+                await this.jobService.EditJobById(id, model);
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, "Unexpected error occurred while trying to add your new house! Please try again later or contact administrator!");
+               
+                model.Categories = await this.categoryService.GetAllAsync();
+                return this.View(model);
+            }
+
+            return RedirectToAction("Details", "Job", new {id});
         }
     }
 }

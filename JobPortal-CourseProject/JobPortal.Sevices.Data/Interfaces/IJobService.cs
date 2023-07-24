@@ -9,8 +9,12 @@
 
         Task CreateAsync(string employerId, JobAddFormModel model);
 
-        Task<JobDetailsViewModel?> GetJobByIdAsync(string jobId);
+        Task<JobDetailsViewModel> GetJobDetailsByIdAsync(string jobId);
 
         Task<bool> ExistsByIdAsync(string jobId);
+
+        Task<JobAddFormModel> GetJobForEditByIdAsync(string jobId);
+
+        Task EditJobById(string jobId, JobAddFormModel model);
     }
 }

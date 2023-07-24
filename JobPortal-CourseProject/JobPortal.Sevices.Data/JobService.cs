@@ -3,6 +3,7 @@
     using JobPortal.Data;
     using JobPortal.Data.Models;
     using JobPortal.Services.Data.Models.Job;
+    using JobPortal.Web.ViewModels.Employer;
     using JobPortal.Sevices.Data.Interfaces;
     using JobPortal.Web.ViewModels.Job;
     using JobPortal.Web.ViewModels.Job.Enums;
@@ -30,8 +31,8 @@
                 EmployerId = Guid.Parse(employerId)
             };
 
-            await dbContext.Jobs.AddAsync(newJob);
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.Jobs.AddAsync(newJob);
+            await this.dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> ExistsByIdAsync(string jobId)
@@ -39,6 +40,34 @@
             var result = await this.dbContext.Jobs.AnyAsync(j => j.Id.ToString() == jobId);
 
             return result;
+        }
+
+        public async Task<JobAddFormModel> GetJobForEditByIdAsync(string jobId)
+        {
+            var job = await this.dbContext.Jobs
+                .FirstAsync(j => j.Id.ToString() == jobId);
+
+            return new JobAddFormModel
+            {
+                Title = job.Title,
+                Description = job.Description,
+                Requirements = job.Requirements,
+                Salary = job.Salary,
+                CategoryId = job.CategoryId,
+            };
+        }
+
+        public async Task EditJobById(string jobId, JobAddFormModel model)
+        {
+            var job = await this.dbContext.Jobs.FirstAsync(j => j.Id.ToString() == jobId);
+
+            job.Title = model.Title;
+            job.Description = model.Description;
+            job.Requirements = model.Requirements;
+            job.Salary = model.Salary;
+            job.CategoryId = model.CategoryId;
+            
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<JobsFilteredAndPagedServiceModel> GetAllJobsAsync(JobsQueryModel queryModel)
@@ -90,14 +119,12 @@
             };
         }
 
-        public async Task<JobDetailsViewModel?> GetJobByIdAsync(string jobId)
+        public async Task<JobDetailsViewModel> GetJobDetailsByIdAsync(string jobId)
         {
-            var job = await dbContext.Jobs.Include(j => j.Employer).ThenInclude(e => e.User).FirstOrDefaultAsync(j => j.Id.ToString() == jobId);
-
-            if (job == null)
-            {
-                return null;
-            }
+            var job = await dbContext.Jobs
+                .Include(j => j.Employer)
+                .ThenInclude(e => e.User)
+                .FirstAsync(j => j.Id.ToString() == jobId);
 
             var jobModel = new JobDetailsViewModel()
             {
@@ -106,9 +133,14 @@
                 Description = job.Description,
                 Requirements = job.Requirements,
                 Salary = job.Salary,
-                EmployerName = job.Employer.User.UserName,
-                CompanyName = job.Employer.CompanyName,
-                CompanyAddress = job.Employer.CompanyAddress
+                EmployerInfo = new EmployerInfoViewModel()
+                {
+                    Name = job.Employer.User.UserName,
+                    Email = job.Employer.User.Email,
+                    PhoneNumber = job.Employer.PhoneNumber,
+                    CompanyName = job.Employer.CompanyName,
+                    CompanyAddress = job.Employer.CompanyAddress
+                }
             };
 
             return jobModel;
