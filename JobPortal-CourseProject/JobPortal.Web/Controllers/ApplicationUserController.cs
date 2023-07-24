@@ -31,7 +31,7 @@
 
             var userId = this.User.GetId()!;
             var alreadyApplied = await applicationUserService.HasAppliedForThatJobAsync(userId, jobId);
-            var isAuthorOfJob = await employerService.IsAuthorOfJobAsync(userId, jobId);
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(userId, jobId);
             
             if (alreadyApplied || isAuthorOfJob)
             {

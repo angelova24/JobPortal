@@ -75,7 +75,7 @@
             return allEmployerJobs;
         }
 
-        public async Task<bool> IsAuthorOfJobAsync(string userId, string jobId)
+        public async Task<bool> IsAuthorOfJobByUserIdAsync(string userId, string jobId)
         {
             var isAuthor = await dbContext.Jobs.AnyAsync(j => j.Id.ToString() == jobId && j.Employer.UserId.ToString() == userId);
 
