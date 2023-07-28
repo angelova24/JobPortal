@@ -16,5 +16,7 @@
         Task<JobAddFormModel> GetJobForEditByIdAsync(string jobId);
 
         Task EditJobById(string jobId, JobAddFormModel model);
+
+        Task DeleteJobByIdAsync(string jobId);
     }
 }

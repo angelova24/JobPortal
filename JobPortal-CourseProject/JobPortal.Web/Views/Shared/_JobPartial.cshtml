@@ -1,4 +1,8 @@
-﻿@model JobViewModel
+﻿@using JobPortal.Sevices.Data.Interfaces
+@using JobPortal.Web.Infrastructure.Extensions
+
+@model JobViewModel
+@inject IEmployerService EmployerService
 
 <div class="row">
     <div class="alert alert-primary mb-3">
@@ -6,7 +10,14 @@
         <div>@Model.Salary</div>
         <div>@Model.CompanyName</div>
         <div>@Model.CompanyAddress</div>
-        <a class="btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id">Details</a>
-        <a class="btn btn-warning mt-1" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a class="w-auto btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+        @if (EmployerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, @Model.Id).Result)
+        {
+            <a class="w-auto btn btn-warning mt-1" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            <form class="d-inline-block w-auto" asp-controller="Job" asp-action="Delete" asp-route-id="@Model.Id">
+                <input type="submit" value="Delete" class="btn btn-danger mt-1"
+                       onclick="return confirm('Are you sure you want to delete job: @Model.Title')"/>
+            </form>
+        }
     </div>
 </div>

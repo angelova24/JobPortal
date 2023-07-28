@@ -179,5 +179,41 @@
 
             return RedirectToAction("Details", "Job", new {id});
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var jobExists = await this.jobService.ExistsByIdAsync(id);
+
+            if (!jobExists)
+            {
+                return RedirectToAction("All", "Job");
+            }
+            
+            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(this.User.GetId()!);
+
+            if (!isUserEmployer)
+            {
+                return RedirectToAction("Become", "Employer");
+            }
+            
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, id);
+
+            if (!isAuthorOfJob)
+            {
+                return RedirectToAction("MyJobOffers", "Employer");
+            }
+
+            try
+            {
+                await this.jobService.DeleteJobByIdAsync(id);
+                return RedirectToAction("MyJobOffers", "Employer");
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+        }
     }
 }

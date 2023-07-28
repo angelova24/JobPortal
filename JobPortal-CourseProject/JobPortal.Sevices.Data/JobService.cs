@@ -72,6 +72,17 @@
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteJobByIdAsync(string jobId)
+        {
+            var job = await this.dbContext.Jobs.FindAsync(Guid.Parse(jobId));
+
+            if (job != null)
+            {
+                this.dbContext.Jobs.Remove(job);
+                await this.dbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task<JobsFilteredAndPagedServiceModel> GetAllJobsAsync(JobsQueryModel queryModel)
         {
             var jobsQuery = this.dbContext.Jobs.AsQueryable();
