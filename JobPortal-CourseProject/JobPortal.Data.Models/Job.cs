@@ -1,10 +1,11 @@
 ﻿namespace JobPortal.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using JobPortal.Data.Models.Interfaces;
 
     using static Common.EntityValidationConstants.Job;
 
-    public class Job
+    public class Job : ISoftDeletable
     {
         public Job()
         {
@@ -40,5 +41,7 @@
         public virtual Employer Employer { get; set; } = null!;
 
         public ICollection<UserJobs> Candidates { get; set; }
+        
+        public DateTime? DeletedOn { get; set; }
     }
 }

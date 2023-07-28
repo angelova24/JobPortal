@@ -8,6 +8,8 @@
     {
         public void Configure(EntityTypeBuilder<Job> builder)
         {
+            builder.HasQueryFilter(job => !job.DeletedOn.HasValue);
+            
             builder
                 .HasOne(j => j.Category)
                 .WithMany(c => c.Jobs)
