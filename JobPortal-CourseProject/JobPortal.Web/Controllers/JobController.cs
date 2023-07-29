@@ -1,4 +1,6 @@
-﻿namespace JobPortal.Web.Controllers
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+
+namespace JobPortal.Web.Controllers
 {
     using JobPortal.Sevices.Data.Interfaces;
     using JobPortal.Web.Infrastructure.Extensions;
@@ -12,25 +14,34 @@
         private readonly IJobService jobService;
         private readonly ICategoryService categoryService;
         private readonly IEmployerService employerService;
+        private readonly INotyfService toastNotification;
 
-        public JobController(IJobService jobService, ICategoryService categoryService, IEmployerService employerService)
+        public JobController(IJobService jobService, ICategoryService categoryService, IEmployerService employerService, INotyfService toastNotification)
         {
             this.jobService = jobService;
             this.categoryService = categoryService;
             this.employerService = employerService;
+            this.toastNotification = toastNotification;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> All([FromQuery]JobsQueryModel queryModel)
         {
-            var serviceModel = await this.jobService.GetAllJobsAsync(queryModel);
+            try
+            {
+                var serviceModel = await this.jobService.GetAllJobsAsync(queryModel);
 
-            queryModel.Jobs = serviceModel.Jobs;
-            queryModel.TotalJobs = serviceModel.JobsCount;
-            queryModel.Categories = await this.categoryService.GetAllCategoryNamesAsync();
+                queryModel.Jobs = serviceModel.Jobs;
+                queryModel.TotalJobs = serviceModel.JobsCount;
+                queryModel.Categories = await this.categoryService.GetAllCategoryNamesAsync();
 
-            return View(queryModel);
+                return View(queryModel);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpGet]
@@ -40,15 +51,23 @@
 
             if (!isEmployer)
             {
+                toastNotification.Error("You must be an employer in order to add new job!");
                 return RedirectToAction("Become", "Employer");
             }
 
-            var formModel = new JobAddFormModel()
+            try
             {
-                Categories = await this.categoryService.GetAllAsync()
-            };
+                var formModel = new JobAddFormModel()
+                {
+                    Categories = await this.categoryService.GetAllAsync()
+                };
 
-            return View(formModel);
+                return View(formModel);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
@@ -58,6 +77,7 @@
 
             if (!isEmployer)
             {
+                toastNotification.Error("You must be an employer in order to add new job!");
                 return RedirectToAction("Become", "Employer");
             }
 
@@ -78,6 +98,7 @@
                 var employerId = await this.employerService.GetEmployerIdByUserIdAsync(this.User.GetId()!);
                 string jobId = await this.jobService.CreateAndReturnIdAsync(employerId!, model);
                 
+                toastNotification.Success("Job was added successfully!");
                 return RedirectToAction("Details", "Job", new { id = jobId });
             }
             catch (Exception)
@@ -97,12 +118,20 @@
 
             if (!jobExists)
             {
+                toastNotification.Error("Job with the provided id does not exist!");
                 return RedirectToAction("All", "Job");
             }
-            
-            var model = await this.jobService.GetJobDetailsByIdAsync(id);
 
-            return View(model);
+            try
+            {
+                var model = await this.jobService.GetJobDetailsByIdAsync(id);
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
         
         [HttpGet]
@@ -112,6 +141,7 @@
 
             if (!jobExists)
             {
+                toastNotification.Error("Job with the provided id does not exist!");
                 return RedirectToAction("All", "Job");
             }
 
@@ -119,6 +149,7 @@
 
             if (!isUserEmployer)
             {
+                toastNotification.Error("You must be an employer in order to edit job info!");
                 return RedirectToAction("Become", "Employer");
             }
             
@@ -126,13 +157,21 @@
 
             if (!isAuthorOfJob)
             {
+                toastNotification.Error("You must be the author of the job you want to edit!");
                 return RedirectToAction("MyJobOffers", "Employer");
             }
 
-            var model = await this.jobService.GetJobForEditByIdAsync(id);
-            model.Categories = await this.categoryService.GetAllAsync();
+            try
+            {
+                var model = await this.jobService.GetJobForEditByIdAsync(id);
+                model.Categories = await this.categoryService.GetAllAsync();
             
-            return View(model);
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
@@ -142,6 +181,7 @@
 
             if (!jobExists)
             {
+                toastNotification.Error("Job with the provided id does not exist!");
                 return RedirectToAction("All", "Job");
             }
             
@@ -149,6 +189,7 @@
 
             if (!isUserEmployer)
             {
+                toastNotification.Error("You must be an employer in order to edit job info!");
                 return RedirectToAction("Become", "Employer");
             }
             
@@ -156,6 +197,7 @@
 
             if (!isAuthorOfJob)
             {
+                toastNotification.Error("You must be the author of the job you want to edit!");
                 return RedirectToAction("MyJobOffers", "Employer");
             }
             
@@ -176,7 +218,8 @@
                 model.Categories = await this.categoryService.GetAllAsync();
                 return this.View(model);
             }
-
+            
+            toastNotification.Success("Job was edited successfully!");
             return RedirectToAction("Details", "Job", new {id});
         }
 
@@ -187,6 +230,7 @@
 
             if (!jobExists)
             {
+                toastNotification.Error("Job with the provided id does not exist!");
                 return RedirectToAction("All", "Job");
             }
             
@@ -194,6 +238,7 @@
 
             if (!isUserEmployer)
             {
+                toastNotification.Error("You must be an employer in order to delete the job!");
                 return RedirectToAction("Become", "Employer");
             }
             
@@ -201,19 +246,27 @@
 
             if (!isAuthorOfJob)
             {
+                toastNotification.Error("You must be the author of the job you want to delete!");
                 return RedirectToAction("MyJobOffers", "Employer");
             }
 
             try
             {
                 await this.jobService.DeleteJobByIdAsync(id);
+                toastNotification.Success("Job was deleted successfully!");
                 return RedirectToAction("MyJobOffers", "Employer");
             }
             catch (Exception)
             {
-                
-                throw;
+                return GeneralError();
             }
+        }
+        
+        private IActionResult GeneralError()
+        {
+            toastNotification.Error("Unexpected error occurred! Please try again later or contact administrator");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
