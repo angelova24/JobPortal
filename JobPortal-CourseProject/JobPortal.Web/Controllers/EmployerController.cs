@@ -1,4 +1,6 @@
-﻿namespace JobPortal.Web.Controllers
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+
+namespace JobPortal.Web.Controllers
 {
     using JobPortal.Sevices.Data.Interfaces;
     using JobPortal.Web.Infrastructure.Extensions;
@@ -10,24 +12,35 @@
     public class EmployerController : Controller
     {
         private readonly IEmployerService employerService;
+        private readonly INotyfService toastNotification;
 
-        public EmployerController(IEmployerService employerService)
+        public EmployerController(IEmployerService employerService, INotyfService toastNotification)
         {
             this.employerService = employerService;
+            this.toastNotification = toastNotification;
         }
 
         [HttpGet]
         public async Task<IActionResult> Become()
         {
             var userId = this.User.GetId()!;
-            var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(userId);
 
-            if (isEmployer)
+            try
             {
-                return RedirectToAction("Index", "Home");
-            }
+                var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(userId);
 
-            return View();
+                if (isEmployer)
+                {
+                    toastNotification.Error("You are already an employer!");
+                    return RedirectToAction("Index", "Home");
+                }
+
+                return View();
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
         }
 
         [HttpPost]
@@ -38,6 +51,7 @@
 
             if (isEmployer)
             {
+                toastNotification.Error("You are already an employer!");
                 return RedirectToAction("Index", "Home");
             }
 
@@ -59,9 +73,10 @@
             }
             catch (Exception)
             {
-                return RedirectToAction("Index", "Home");
+                return GeneralError();
             }
 
+            toastNotification.Success("You have successfully registered as an employer!");
             return RedirectToAction("All", "Job");
         }
 
@@ -73,12 +88,28 @@
 
             if (!isEmployer)
             {
+                toastNotification.Error("You must be an employer!");
                 return RedirectToAction("Index", "Home");
             }
-            var employerId = await this.employerService.GetEmployerIdByUserIdAsync(userId);
-            var jobOffers = await this.employerService.GetAllJobsByEmployerIdAsync(employerId!);
 
-            return View(jobOffers);
+            try
+            {
+                var employerId = await this.employerService.GetEmployerIdByUserIdAsync(userId);
+                var jobOffers = await this.employerService.GetAllJobsByEmployerIdAsync(employerId!);
+
+                return View(jobOffers);
+            }
+            catch (Exception )
+            {
+                return GeneralError();
+            }
+        }
+        
+        private IActionResult GeneralError()
+        {
+            toastNotification.Error("Unexpected error occurred! Please try again later or contact administrator");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
