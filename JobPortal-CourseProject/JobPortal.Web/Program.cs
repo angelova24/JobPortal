@@ -1,3 +1,5 @@
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 using JobPortal.Data;
 using JobPortal.Data.Models;
 using JobPortal.Sevices.Data;
@@ -27,6 +29,13 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 })
     .AddEntityFrameworkStores<JobPortalDbContext>();
 
+builder.Services.AddNotyf(config =>
+{
+    config.DurationInSeconds = 5;
+    config.IsDismissable = true;
+    config.Position = NotyfPosition.BottomCenter;
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<IEmployerService, EmployerService>();
@@ -54,6 +63,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseNotyf();
 
 app.MapControllerRoute(
     name: "default",
