@@ -9,12 +9,27 @@
         <div class="fw-bold fst-italic">Requirements</div>
         <div>@Model.Requirements</div>
         <div class="fw-bold fst-italic">Salary</div>
-        <div>@Model.Salary</div>
+        <div>
+            <i class="bi bi-cash-stack"></i>
+            @Model.Salary
+        </div>
         <div class="fw-bold fst-italic">Employer info</div>
-        <div>@Model.EmployerInfo.Name</div>
-        <div>@Model.EmployerInfo.Email</div>
-        <div>@Model.EmployerInfo.PhoneNumber</div>
-        <div>@Model.EmployerInfo.CompanyName</div>
+        <div>
+            <i class="bi bi-person"></i>
+            @Model.EmployerInfo.Name
+        </div>
+        <div>
+            <i class="bi bi-envelope-at"></i>
+            @Model.EmployerInfo.Email
+        </div>
+        <div>
+            <i class="bi bi-telephone"></i>
+            @Model.EmployerInfo.PhoneNumber
+        </div>
+        <div>
+            <i class="bi bi-buildings"></i>
+            @Model.EmployerInfo.CompanyName
+        </div>
         <div>
             <i class="bi bi-geo-alt"></i>
             @Model.EmployerInfo.CompanyAddress
