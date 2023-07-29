@@ -15,7 +15,10 @@
         <div>@Model.EmployerInfo.Email</div>
         <div>@Model.EmployerInfo.PhoneNumber</div>
         <div>@Model.EmployerInfo.CompanyName</div>
-        <div>@Model.EmployerInfo.CompanyAddress</div>
+        <div>
+            <i class="bi bi-geo-alt"></i>
+            @Model.EmployerInfo.CompanyAddress
+        </div>
         <form asp-action="ApplyForJob" asp-controller="ApplicationUser" asp-route-jobId="@Model.Id">
             <button class="btn btn-primary mt-1" name="button">Apply</button>
         </form>

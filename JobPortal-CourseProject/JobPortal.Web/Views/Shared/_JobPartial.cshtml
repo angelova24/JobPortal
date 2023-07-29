@@ -9,7 +9,10 @@
         <div class="text-lg fw-bold">@Model.Title</div>
         <div>@Model.Salary</div>
         <div>@Model.CompanyName</div>
-        <div>@Model.CompanyAddress</div>
+        <div>
+            <i class="bi bi-geo-alt"></i>
+            @Model.CompanyAddress
+        </div>
         <a class="w-auto btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id">Details</a>
         @if (EmployerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, @Model.Id).Result)
         {
