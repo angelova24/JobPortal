@@ -4,6 +4,7 @@ using JobPortal.Data;
 using JobPortal.Data.Models;
 using JobPortal.Sevices.Data;
 using JobPortal.Sevices.Data.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +37,13 @@ builder.Services.AddNotyf(config =>
     config.Position = NotyfPosition.BottomCenter;
 });
 
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddControllersWithViews()
+    .AddMvcOptions(options =>
+    {
+        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+    });
+
 builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<IEmployerService, EmployerService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
