@@ -1,0 +1,11 @@
+@{
+    ViewData["Title"] = "Page Not Found";
+}
+
+<title>@ViewBag.Title</title>
+<img src="~/images/404.gif" alt="not found" class="d-block mx-auto">
+<h1 class="text-center text-md mt-4">Whoops, we can't seem to find the resource you're looking for.</h1>
+<p class="text-center text-md p-3 font-monospace">Please check that the web site address is spelled correctly.</p>
+<div class="text-center">
+    <a asp-action="Index" asp-controller="Home">Go to Homepage</a>
+</div>
