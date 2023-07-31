@@ -3,6 +3,9 @@
 
 @model JobViewModel
 @inject IEmployerService EmployerService
+@{
+    bool isAuthorOfTheJob = await EmployerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, @Model.Id);
+}
 
 <div class="row">
     <div class="alert alert-primary mb-3">
@@ -20,7 +23,7 @@
             @Model.CompanyAddress
         </div>
         <a class="w-auto btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id">Details</a>
-        @if (EmployerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, @Model.Id).Result)
+        @if (isAuthorOfTheJob)
         {
             <a class="w-auto btn btn-warning mt-1" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
             <form class="d-inline-block w-auto" asp-controller="Job" asp-action="Delete" asp-route-id="@Model.Id">
