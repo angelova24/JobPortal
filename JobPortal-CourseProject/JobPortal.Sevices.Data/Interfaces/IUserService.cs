@@ -9,5 +9,7 @@
         Task<bool> HasAppliedForThatJobAsync(string userId, string jobId);
 
         Task<IEnumerable<JobViewModel>> GetAllJobsByCandidateIdAsync(string candidateId);
+        
+        Task<string> GetFullNameByEmailAsync(string email);
     }
 }

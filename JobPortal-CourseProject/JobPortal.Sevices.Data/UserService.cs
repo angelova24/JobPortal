@@ -46,6 +46,19 @@
             return userApplicationJobs;
         }
 
+        public async Task<string> GetFullNameByEmailAsync(string email)
+        {
+            var user = await this.dbContext.Users
+                .FirstOrDefaultAsync(u => u.Email == email);
+            
+            if (user == null)
+            {
+                return string.Empty;
+            }
+
+            return $"{user.FirstName} {user.LastName}";
+        }
+
         public async Task<bool> HasAppliedForThatJobAsync(string userId, string jobId)
         {
             var candidature = await dbContext.UserJobs
