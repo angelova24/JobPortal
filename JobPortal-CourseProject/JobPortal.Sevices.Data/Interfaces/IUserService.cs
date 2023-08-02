@@ -2,7 +2,7 @@
 {
     using JobPortal.Web.ViewModels.Job;
 
-    public interface IApplicationUserService
+    public interface IUserService
     {
         Task ApplyForJobAsync(string userId, string jobId);
 

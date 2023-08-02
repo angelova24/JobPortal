@@ -8,11 +8,11 @@
     using System.Threading.Tasks;
     using static JobPortal.Common.EntityValidationConstants;
 
-    public class ApplicationUserService : IApplicationUserService
+    public class UserService : IUserService
     {
         private readonly JobPortalDbContext dbContext;
 
-        public ApplicationUserService(JobPortalDbContext dbContext)
+        public UserService(JobPortalDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

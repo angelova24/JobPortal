@@ -34,7 +34,7 @@
             <i class="bi bi-geo-alt"></i>
             @Model.EmployerInfo.CompanyAddress
         </div>
-        <form asp-action="ApplyForJob" asp-controller="ApplicationUser" asp-route-jobId="@Model.Id">
+        <form asp-action="ApplyForJob" asp-controller="User" asp-route-jobId="@Model.Id">
             <button class="btn btn-primary mt-1" name="button">Apply</button>
         </form>
     </div>

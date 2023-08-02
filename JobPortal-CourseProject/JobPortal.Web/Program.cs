@@ -47,7 +47,7 @@ builder.Services
 builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<IEmployerService, EmployerService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
