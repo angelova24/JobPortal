@@ -37,6 +37,11 @@ builder.Services.AddNotyf(config =>
     config.Position = NotyfPosition.BottomCenter;
 });
 
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = "/User/Login";
+});
+
 builder.Services
     .AddControllersWithViews()
     .AddMvcOptions(options =>
