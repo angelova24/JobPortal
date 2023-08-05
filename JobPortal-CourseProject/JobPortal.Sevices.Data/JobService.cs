@@ -3,12 +3,11 @@
     using JobPortal.Data;
     using JobPortal.Data.Models;
     using JobPortal.Services.Data.Models.Job;
-    using JobPortal.Web.ViewModels.Employer;
-    using JobPortal.Sevices.Data.Interfaces;
-    using JobPortal.Web.ViewModels.Job;
-    using JobPortal.Web.ViewModels.Job.Enums;
+    using Web.ViewModels.Employer;
+    using Interfaces;
+    using Web.ViewModels.Job;
+    using Web.ViewModels.Job.Enums;
     using Microsoft.EntityFrameworkCore;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public class JobService : IJobService
@@ -31,22 +30,22 @@
                 EmployerId = Guid.Parse(employerId)
             };
 
-            await this.dbContext.Jobs.AddAsync(newJob);
-            await this.dbContext.SaveChangesAsync();
+            await dbContext.Jobs.AddAsync(newJob);
+            await dbContext.SaveChangesAsync();
 
             return newJob.Id.ToString();
         }
 
         public async Task<bool> ExistsByIdAsync(string jobId)
         {
-            var result = await this.dbContext.Jobs.AnyAsync(j => j.Id.ToString() == jobId);
+            var result = await dbContext.Jobs.AnyAsync(j => j.Id.ToString() == jobId);
 
             return result;
         }
 
         public async Task<JobAddFormModel> GetJobForEditByIdAsync(string jobId)
         {
-            var job = await this.dbContext.Jobs
+            var job = await dbContext.Jobs
                 .FirstAsync(j => j.Id.ToString() == jobId);
 
             return new JobAddFormModel
@@ -61,7 +60,7 @@
 
         public async Task EditJobById(string jobId, JobAddFormModel model)
         {
-            var job = await this.dbContext.Jobs.FirstAsync(j => j.Id.ToString() == jobId);
+            var job = await dbContext.Jobs.FirstAsync(j => j.Id.ToString() == jobId);
 
             job.Title = model.Title;
             job.Description = model.Description;
@@ -74,18 +73,18 @@
 
         public async Task DeleteJobByIdAsync(string jobId)
         {
-            var job = await this.dbContext.Jobs.FindAsync(Guid.Parse(jobId));
+            var job = await dbContext.Jobs.FindAsync(Guid.Parse(jobId));
 
             if (job != null)
             {
-                this.dbContext.Jobs.Remove(job);
-                await this.dbContext.SaveChangesAsync();
+                dbContext.Jobs.Remove(job);
+                await dbContext.SaveChangesAsync();
             }
         }
 
         public async Task<JobsFilteredAndPagedServiceModel> GetAllJobsAsync(JobsQueryModel queryModel)
         {
-            var jobsQuery = this.dbContext.Jobs.AsQueryable();
+            var jobsQuery = dbContext.Jobs.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(queryModel.Category))
             {
@@ -148,7 +147,7 @@
                 Salary = job.Salary,
                 EmployerInfo = new EmployerInfoViewModel()
                 {
-                    Name = job.Employer.User.UserName,
+                    Name = job.Employer.User.FirstName + " " + job.Employer.User.LastName,
                     Email = job.Employer.User.Email,
                     PhoneNumber = job.Employer.PhoneNumber,
                     CompanyName = job.Employer.CompanyName,
