@@ -1,14 +1,26 @@
-﻿@model JobDetailsViewModel
+﻿@using JobPortal.Sevices.Data.Interfaces
+@using JobPortal.Web.Infrastructure.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model JobDetailsViewModel
+@inject IEmployerService EmployerService
+@inject IUserService UserService
+@{
+    var isAuthorOfTheJob = await EmployerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, @Model.Id);
+    var hasApplied = await UserService.HasAppliedForThatJobAsync(this.User.GetId()!, @Model.Id);
+}
 
+@{
+    ViewBag.Title = "Details";
+}
 
-<div class="row">
+<div class="row pt-3">
     <div class="alert alert-secondary mb-3">
         <div class="text-lg fw-bold text-center">@Model.Title</div>
         <div class="fw-bold fst-italic">Description</div>
         <div>@Model.Description</div>
         <div class="fw-bold fst-italic">Requirements</div>
         <div>@Model.Requirements</div>
-        <div class="fw-bold fst-italic">Salary</div>
+        <div class="fw-bold fst-italic">Salary per month</div>
         <div>
             <i class="bi bi-cash-stack"></i>
             @Model.Salary
@@ -34,8 +46,17 @@
             <i class="bi bi-geo-alt"></i>
             @Model.EmployerInfo.CompanyAddress
         </div>
-        <form asp-action="ApplyForJob" asp-controller="User" asp-route-jobId="@Model.Id">
-            <button class="btn btn-primary mt-1" name="button">Apply</button>
-        </form>
+        @if (!isAuthorOfTheJob && !hasApplied)
+        {
+            <form asp-action="ApplyForJob" asp-controller="User" asp-route-jobId="@Model.Id">
+                <button class="btn btn-primary mt-1" name="button">Apply</button>
+            </form>
+        }
+        @if (hasApplied)
+        {
+            <p></p>
+            <div class="fw-bold">You have already applied for that job!</div>
+            <a class="w-auto btn btn-primary mt-1" asp-controller="User" asp-action="MyApplications">Go to applications</a>
+        }
     </div>
 </div>

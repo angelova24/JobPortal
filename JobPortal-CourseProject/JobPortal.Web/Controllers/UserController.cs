@@ -3,9 +3,9 @@
 namespace JobPortal.Web.Controllers
 {
     using JobPortal.Sevices.Data.Interfaces;
-    using JobPortal.Web.Infrastructure.Extensions;
-    using JobPortal.Data.Models;
-    using JobPortal.Web.ViewModels.User;
+    using Infrastructure.Extensions;
+    using Data.Models;
+    using ViewModels.User;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Authentication;
@@ -39,19 +39,22 @@ namespace JobPortal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ApplyForJob(string jobId)
         {
-            var jobExists = await this.jobService.ExistsByIdAsync(jobId);
+            var jobExists = await jobService.ExistsByIdAsync(jobId);
 
             if (!jobExists)
             {
-                return BadRequest();
+                toastNotification.Error("Job with provided id does not exists! Please try again!");
+                
+                return RedirectToAction("All", "Job");
             }
 
-            var userId = this.User.GetId()!;
+            var userId = User.GetId()!;
             var alreadyApplied = await userService.HasAppliedForThatJobAsync(userId, jobId);
             var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(userId, jobId);
             
             if (alreadyApplied || isAuthorOfJob)
             {
+                toastNotification.Error(alreadyApplied ? "You have already applied for that job!" : "You are the owner of that job!");
                 return RedirectToAction("Index", "Home");
             }
 
@@ -70,7 +73,7 @@ namespace JobPortal.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> MyApplications()
         {
-            var userId = this.User.GetId()!;
+            var userId = User.GetId()!;
 
             var userApplicationJobs = await userService.GetAllJobsByCandidateIdAsync(userId);
 
@@ -81,7 +84,7 @@ namespace JobPortal.Web.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return this.View();
+            return View();
         }
 
         [AllowAnonymous]
@@ -90,7 +93,7 @@ namespace JobPortal.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.View(model);
+                return View(model);
             }
 
             ApplicationUser user = new ApplicationUser()
@@ -99,11 +102,11 @@ namespace JobPortal.Web.Controllers
                 LastName = model.LastName
             };
 
-            await this.userManager.SetEmailAsync(user, model.Email);
-            await this.userManager.SetUserNameAsync(user, model.Email);
+            await userManager.SetEmailAsync(user, model.Email);
+            await userManager.SetUserNameAsync(user, model.Email);
 
             IdentityResult result = 
-                await this.userManager.CreateAsync(user, model.Password);
+                await userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
@@ -112,12 +115,12 @@ namespace JobPortal.Web.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
 
-                return this.View(model);
+                return View(model);
             }
 
-            await this.signInManager.SignInAsync(user, false);
+            await signInManager.SignInAsync(user, false);
 
-            return this.RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
         
         [AllowAnonymous]
@@ -131,7 +134,7 @@ namespace JobPortal.Web.Controllers
                 ReturnUrl = returnUrl
             };
 
-            return this.View(model);
+            return View(model);
         }
 
         [AllowAnonymous]
@@ -140,21 +143,21 @@ namespace JobPortal.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.View(model);
+                return View(model);
             }
 
             var result = 
-                await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
             if (!result.Succeeded)
             {
-                this.toastNotification.Error(
+                toastNotification.Error(
                     "There was an error while logging you in! Please try again later or contact an administrator.");
 
-                return this.View(model);
+                return View(model);
             }
 
-            return this.Redirect(model.ReturnUrl ?? "/Home/Index");
+            return Redirect(model.ReturnUrl ?? "/Home/Index");
         }
     }
 }
