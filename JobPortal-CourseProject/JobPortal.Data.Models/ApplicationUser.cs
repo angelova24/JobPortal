@@ -21,5 +21,7 @@
         public string LastName { get; set; } = null!;
 
         public ICollection<UserJobs> JobApplications { get; set; }
+        
+        public ICollection<Article> Articles { get; set; }
     }
 }

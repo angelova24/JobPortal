@@ -43,5 +43,17 @@
             public const int PasswordMinLength = 6;
             public const int PasswordMaxLength = 100;
         }
+        
+        public static class Article
+        {
+            public const int TitleMinLenght = 10;
+            public const int TitleMaxLenght = 120;
+
+            public const int SummaryMinLenght = 30;
+            public const int SummaryMaxLenght = 200;
+
+            public const int TextMinLenght = 100;
+            public const int TextMaxLenght = 10000;
+        }
     }
 }

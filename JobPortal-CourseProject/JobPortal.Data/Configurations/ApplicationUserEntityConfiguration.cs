@@ -28,6 +28,7 @@ namespace JobPortal.Data.Configurations
             
             var adminUser = new ApplicationUser()
             {
+                Id = Guid.Parse("e30fae8e-5a56-4112-9250-aff3affb75a4"),
                 UserName = "admin@test.com",
                 NormalizedUserName = "admin@test.com",
                 Email = "admin@test.com",

@@ -22,6 +22,8 @@
 
         public DbSet<UserJobs> UserJobs { get; set; } = null!;
         
+        public DbSet<Article> Articles { get; set; } = null!;
+        
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             ChangeTracker.DetectChanges();
