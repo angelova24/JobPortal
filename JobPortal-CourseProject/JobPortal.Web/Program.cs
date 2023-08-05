@@ -4,8 +4,11 @@ using JobPortal.Data;
 using JobPortal.Data.Models;
 using JobPortal.Sevices.Data;
 using JobPortal.Sevices.Data.Interfaces;
+using JobPortal.Web.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static JobPortal.Common.GeneralApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequiredLength =
         builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
 })
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<JobPortalDbContext>();
 
 builder.Services.AddNotyf(config =>
@@ -76,6 +80,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+if (app.Environment.IsDevelopment())
+{
+    app.SeedAdministrator(DevelopmentAdminEmail);
+}
 
 app.UseNotyf();
 
