@@ -1,6 +1,6 @@
 ﻿namespace JobPortal.Data.Configurations
 {
-    using JobPortal.Data.Models;
+    using Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,7 +8,7 @@
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.HasData(this.GenerateCategories());
+            builder.HasData(GenerateCategories());
         }
 
         private Category[] GenerateCategories() 
