@@ -14,17 +14,18 @@ namespace JobPortal.Data.Configurations
             builder
                 .Property(u => u.FirstName)
                 .HasDefaultValue("FirstName");
-
+            
             builder
                 .Property(u => u.LastName)
                 .HasDefaultValue("LastName");
-
-            builder.HasData(GenerateUser());
+            
+            builder.HasData(GenerateUsers());
         }
 
-        private ApplicationUser GenerateUser()
+        private ApplicationUser[] GenerateUsers()
         {
             var hasher = new PasswordHasher<ApplicationUser>();
+            var users = new HashSet<ApplicationUser>();
             
             var adminUser = new ApplicationUser()
             {
@@ -39,8 +40,23 @@ namespace JobPortal.Data.Configurations
             };
 
             adminUser.PasswordHash = hasher.HashPassword(adminUser, "admin1234");
-
-            return adminUser;
+            users.Add(adminUser);
+            
+            var employerUser = new ApplicationUser()
+            {
+                Id = Guid.Parse("262a41ba-3ef1-4fe8-94b2-7f3b2fa6f855"),
+                UserName = "employer@test.com",
+                NormalizedUserName = "employer@test.com",
+                Email = "employer@test.com",
+                NormalizedEmail = "employer@test.com",
+                FirstName = "Employer",
+                LastName = "User",
+                SecurityStamp = "49380414-9ca7-4166-ad7a-5fd3afc11bd2"
+            };
+            employerUser.PasswordHash = hasher.HashPassword(employerUser, "123456");
+            users.Add(employerUser);
+            
+            return users.ToArray();
         }
     }
 }
