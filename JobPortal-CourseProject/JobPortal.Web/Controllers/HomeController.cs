@@ -1,8 +1,7 @@
 ﻿namespace JobPortal.Web.Controllers
 {
-    using JobPortal.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Mvc;
-    using System.Diagnostics;
+    using static Common.GeneralApplicationConstants;
 
     public class HomeController : Controller
     {
@@ -13,6 +12,10 @@
 
         public IActionResult Index()
         {
+            if (this.User.IsInRole(AdminRoleName))
+            {
+                return RedirectToAction("Index", "Home", new { Area = AdminAreaName });
+            }
             return View();
         }
 
@@ -22,6 +25,10 @@
             if (statusCode == 404)
             {
                 return View("Error404");
+            }
+            if (statusCode == 401)
+            {
+                return View("Error401");
             }
             
             return View();

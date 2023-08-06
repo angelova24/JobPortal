@@ -44,6 +44,7 @@ builder.Services.AddNotyf(config =>
 builder.Services.ConfigureApplicationCookie(config =>
 {
     config.LoginPath = "/User/Login";
+    config.AccessDeniedPath = "/Home/Error/401";
 });
 
 builder.Services
@@ -88,9 +89,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseNotyf();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+app.UseEndpoints(config =>
+{
+    config.MapControllerRoute(
+        name : "areas",
+        pattern : "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+    config.MapDefaultControllerRoute();
+    config.MapRazorPages();
+});
 
 app.Run();
