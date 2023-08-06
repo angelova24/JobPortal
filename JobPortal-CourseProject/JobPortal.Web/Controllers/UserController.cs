@@ -39,6 +39,13 @@ namespace JobPortal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ApplyForJob(string jobId)
         {
+            if (User.IsAdmin())
+            {
+                toastNotification.Error("As admin you are not allowed to apply for jobs!");
+                
+                return RedirectToAction("All", "Job");
+            }
+            
             var jobExists = await jobService.ExistsByIdAsync(jobId);
 
             if (!jobExists)
