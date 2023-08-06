@@ -89,7 +89,7 @@ namespace JobPortal.Web.Controllers
             if (!isEmployer)
             {
                 toastNotification.Error("You must be an employer!");
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Become", "Employer");
             }
 
             try
