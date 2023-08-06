@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Job" asp-action="All">All Jobs</a>
+                    <a class="nav-link" asp-area="" asp-controller="Job" asp-action="All">All Jobs</a>
                 </li>
                 @if (User.Identity?.IsAuthenticated ?? false)
                 {
@@ -40,7 +40,7 @@
                             <a class="nav-link" asp-area="" asp-controller="User" asp-action="MyApplications">My Applications</a>
                         </li>
                     }
-                    @if (isUserEmployer || User.IsAdmin())
+                    @if (isUserEmployer)
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Employer" asp-action="MyJobOffers">My Job Offers</a>
