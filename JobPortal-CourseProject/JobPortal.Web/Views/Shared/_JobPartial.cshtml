@@ -23,7 +23,7 @@
             @Model.CompanyAddress
         </div>
         <a class="w-auto btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id">Details</a>
-        @if (isAuthorOfTheJob)
+        @if (isAuthorOfTheJob || User.IsAdmin())
         {
             <a class="w-auto btn btn-warning mt-1" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
             <form class="d-inline-block w-auto" asp-controller="Job" asp-action="Delete" asp-route-id="@Model.Id">

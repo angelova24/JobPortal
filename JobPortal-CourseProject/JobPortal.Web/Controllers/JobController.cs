@@ -3,8 +3,8 @@
 namespace JobPortal.Web.Controllers
 {
     using JobPortal.Sevices.Data.Interfaces;
-    using JobPortal.Web.Infrastructure.Extensions;
-    using JobPortal.Web.ViewModels.Job;
+    using Infrastructure.Extensions;
+    using ViewModels.Job;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -30,11 +30,11 @@ namespace JobPortal.Web.Controllers
         {
             try
             {
-                var serviceModel = await this.jobService.GetAllJobsAsync(queryModel);
+                var serviceModel = await jobService.GetAllJobsAsync(queryModel);
 
                 queryModel.Jobs = serviceModel.Jobs;
                 queryModel.TotalJobs = serviceModel.JobsCount;
-                queryModel.Categories = await this.categoryService.GetAllCategoryNamesAsync();
+                queryModel.Categories = await categoryService.GetAllCategoryNamesAsync();
 
                 return View(queryModel);
             }
@@ -47,7 +47,7 @@ namespace JobPortal.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(this.User.GetId()!);
+            var isEmployer = await employerService.EmployerExistsByUserIdAsync(User.GetId()!);
 
             if (!isEmployer)
             {
@@ -59,7 +59,7 @@ namespace JobPortal.Web.Controllers
             {
                 var formModel = new JobAddFormModel()
                 {
-                    Categories = await this.categoryService.GetAllAsync()
+                    Categories = await categoryService.GetAllAsync()
                 };
 
                 return View(formModel);
@@ -73,30 +73,30 @@ namespace JobPortal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(JobAddFormModel model)
         {
-            var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(this.User.GetId()!);
+            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(User.GetId()!);
 
-            if (!isEmployer)
+            if (!isUserEmployer)
             {
                 toastNotification.Error("You must be an employer in order to add new job!");
                 return RedirectToAction("Become", "Employer");
             }
 
-            var categoryExists = await this.categoryService.ExistsByIdAsync(model.CategoryId);
+            var categoryExists = await categoryService.ExistsByIdAsync(model.CategoryId);
             if (!categoryExists)
             {
-                this.ModelState.AddModelError(nameof(model.CategoryId), "Selected category does not exist.");
+                ModelState.AddModelError(nameof(model.CategoryId), "Selected category does not exist.");
             }
 
-            if(!this.ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                model.Categories = await this.categoryService.GetAllAsync();
+                model.Categories = await categoryService.GetAllAsync();
                 return View(model);
             }
 
             try
             {
-                var employerId = await this.employerService.GetEmployerIdByUserIdAsync(this.User.GetId()!);
-                string jobId = await this.jobService.CreateAndReturnIdAsync(employerId!, model);
+                var employerId = await employerService.GetEmployerIdByUserIdAsync(User.GetId()!);
+                string jobId = await jobService.CreateAndReturnIdAsync(employerId!, model);
                 
                 toastNotification.Success("Job was added successfully!");
                 return RedirectToAction("Details", "Job", new { id = jobId });
@@ -114,7 +114,7 @@ namespace JobPortal.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(string id)
         {
-            var jobExists = await this.jobService.ExistsByIdAsync(id);
+            var jobExists = await jobService.ExistsByIdAsync(id);
 
             if (!jobExists)
             {
@@ -124,7 +124,7 @@ namespace JobPortal.Web.Controllers
 
             try
             {
-                var model = await this.jobService.GetJobDetailsByIdAsync(id);
+                var model = await jobService.GetJobDetailsByIdAsync(id);
 
                 return View(model);
             }
@@ -137,7 +137,7 @@ namespace JobPortal.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
-            var jobExists = await this.jobService.ExistsByIdAsync(id);
+            var jobExists = await jobService.ExistsByIdAsync(id);
 
             if (!jobExists)
             {
@@ -145,17 +145,17 @@ namespace JobPortal.Web.Controllers
                 return RedirectToAction("All", "Job");
             }
 
-            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(this.User.GetId()!);
+            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(User.GetId()!);
 
-            if (!isUserEmployer)
+            if (!isUserEmployer && !User.IsAdmin())
             {
                 toastNotification.Error("You must be an employer in order to edit job info!");
                 return RedirectToAction("Become", "Employer");
             }
             
-            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, id);
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(User.GetId()!, id);
 
-            if (!isAuthorOfJob)
+            if (!isAuthorOfJob && !User.IsAdmin())
             {
                 toastNotification.Error("You must be the author of the job you want to edit!");
                 return RedirectToAction("MyJobOffers", "Employer");
@@ -163,8 +163,8 @@ namespace JobPortal.Web.Controllers
 
             try
             {
-                var model = await this.jobService.GetJobForEditByIdAsync(id);
-                model.Categories = await this.categoryService.GetAllAsync();
+                var model = await jobService.GetJobForEditByIdAsync(id);
+                model.Categories = await categoryService.GetAllAsync();
             
                 return View(model);
             }
@@ -177,7 +177,7 @@ namespace JobPortal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string id, JobAddFormModel model)
         {
-            var jobExists = await this.jobService.ExistsByIdAsync(id);
+            var jobExists = await jobService.ExistsByIdAsync(id);
 
             if (!jobExists)
             {
@@ -185,38 +185,38 @@ namespace JobPortal.Web.Controllers
                 return RedirectToAction("All", "Job");
             }
             
-            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(this.User.GetId()!);
+            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(User.GetId()!);
 
-            if (!isUserEmployer)
+            if (!isUserEmployer && !User.IsAdmin())
             {
                 toastNotification.Error("You must be an employer in order to edit job info!");
                 return RedirectToAction("Become", "Employer");
             }
             
-            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, id);
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(User.GetId()!, id);
 
-            if (!isAuthorOfJob)
+            if (!isAuthorOfJob && !User.IsAdmin())
             {
                 toastNotification.Error("You must be the author of the job you want to edit!");
                 return RedirectToAction("MyJobOffers", "Employer");
             }
             
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                model.Categories = await this.categoryService.GetAllAsync();
-                return this.View(model);
+                model.Categories = await categoryService.GetAllAsync();
+                return View(model);
             }
 
             try
             {
-                await this.jobService.EditJobById(id, model);
+                await jobService.EditJobById(id, model);
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, "Unexpected error occurred while trying to add your new house! Please try again later or contact administrator!");
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while trying to add your new house! Please try again later or contact administrator!");
                
-                model.Categories = await this.categoryService.GetAllAsync();
-                return this.View(model);
+                model.Categories = await categoryService.GetAllAsync();
+                return View(model);
             }
             
             toastNotification.Success("Job was edited successfully!");
@@ -226,7 +226,7 @@ namespace JobPortal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            var jobExists = await this.jobService.ExistsByIdAsync(id);
+            var jobExists = await jobService.ExistsByIdAsync(id);
 
             if (!jobExists)
             {
@@ -234,17 +234,17 @@ namespace JobPortal.Web.Controllers
                 return RedirectToAction("All", "Job");
             }
             
-            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(this.User.GetId()!);
+            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(User.GetId()!);
 
-            if (!isUserEmployer)
+            if (!isUserEmployer && !User.IsAdmin())
             {
                 toastNotification.Error("You must be an employer in order to delete the job!");
                 return RedirectToAction("Become", "Employer");
             }
             
-            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(this.User.GetId()!, id);
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(User.GetId()!, id);
 
-            if (!isAuthorOfJob)
+            if (!isAuthorOfJob && !User.IsAdmin())
             {
                 toastNotification.Error("You must be the author of the job you want to delete!");
                 return RedirectToAction("MyJobOffers", "Employer");
@@ -252,7 +252,7 @@ namespace JobPortal.Web.Controllers
 
             try
             {
-                await this.jobService.DeleteJobByIdAsync(id);
+                await jobService.DeleteJobByIdAsync(id);
                 toastNotification.Success("Job was deleted successfully!");
                 return RedirectToAction("MyJobOffers", "Employer");
             }

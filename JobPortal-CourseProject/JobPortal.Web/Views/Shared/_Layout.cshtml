@@ -4,7 +4,7 @@
 
 @inject IEmployerService EmployerService
 @{
-    bool isUserEmployer = await EmployerService.EmployerExistsByUserIdAsync(this.User.GetId());
+    var isUserEmployer = await EmployerService.EmployerExistsByUserIdAsync(User.GetId()!);
 }
 
 <!DOCTYPE html>
@@ -32,12 +32,15 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Job" asp-action="All">All Jobs</a>
                 </li>
-                @if (this.User.Identity?.IsAuthenticated ?? false)
+                @if (User.Identity?.IsAuthenticated ?? false)
                 {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="MyApplications">My Applications</a>
-                    </li>
-                    @if (isUserEmployer)
+                    @if (!User.IsAdmin())
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="MyApplications">My Applications</a>
+                        </li>
+                    }
+                    @if (isUserEmployer || User.IsAdmin())
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Employer" asp-action="MyJobOffers">My Job Offers</a>
