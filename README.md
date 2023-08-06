@@ -17,11 +17,12 @@ and is a simple solution for searching and uploading job offers and also for rea
   `git clone https://github.com/angelova24/JobPortal.git`
 - Open JobPortal-CourseProject.sln in Visual Studio/Rider
 - Change the connectionString in Program.cs file
-- Apply all migration and then run the project
-- You must now have the seeded admin user with
-  - Email: admin@test.com
-  - Password: admin1234
-- In order to have the seeded job offers you have to:
-  - register an user
-  - go in DB and manually add employer with ID: AA294071-5C7D-4F4C-8451-42FAC506957C
-  - eventually you have to apply the migrations again
+- Apply all migrations and then run the project
+- You must now have in DB:
+  - Admin user with:
+    - Email: admin@test.com
+    - Password: admin1234
+  - Employer user with:
+    - Email: employer@test.com
+    - Password: 123456
+  - Seeded 3 jobs and 2 articles
