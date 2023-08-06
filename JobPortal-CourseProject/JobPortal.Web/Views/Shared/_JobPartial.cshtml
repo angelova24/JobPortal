@@ -22,11 +22,15 @@
             <i class="bi bi-geo-alt"></i>
             @Model.CompanyAddress
         </div>
-        <a class="w-auto btn btn-primary mt-1" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+        <a asp-area="" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id" class="w-auto btn btn-primary mt-1">
+            Details
+        </a>
         @if (isAuthorOfTheJob || User.IsAdmin())
         {
-            <a class="w-auto btn btn-warning mt-1" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-            <form class="d-inline-block w-auto" asp-controller="Job" asp-action="Delete" asp-route-id="@Model.Id">
+            <a asp-area="" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id" class="w-auto btn btn-warning mt-1">
+                Edit
+            </a>
+            <form asp-area="" asp-controller="Job" asp-action="Delete" asp-route-id="@Model.Id" class="d-inline-block w-auto">
                 <input type="submit" value="Delete" class="btn btn-danger mt-1"
                        onclick="return confirm('Are you sure you want to delete job: @Model.Title')"/>
             </form>
