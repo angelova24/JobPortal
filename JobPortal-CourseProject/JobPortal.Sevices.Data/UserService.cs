@@ -2,11 +2,11 @@
 {
     using JobPortal.Data;
     using JobPortal.Data.Models;
-    using JobPortal.Sevices.Data.Interfaces;
-    using JobPortal.Web.ViewModels.Job;
+    using Interfaces;
+    using Web.ViewModels.Job;
     using Microsoft.EntityFrameworkCore;
     using System.Threading.Tasks;
-    using static JobPortal.Common.EntityValidationConstants;
+    using Web.ViewModels.User;
 
     public class UserService : IUserService
     {
@@ -48,7 +48,7 @@
 
         public async Task<string> GetFullNameByEmailAsync(string email)
         {
-            var user = await this.dbContext.Users
+            var user = await dbContext.Users
                 .FirstOrDefaultAsync(u => u.Email == email);
             
             if (user == null)
@@ -57,6 +57,33 @@
             }
 
             return $"{user.FirstName} {user.LastName}";
+        }
+
+        public async Task<IEnumerable<UserViewModel>> GetAllAsync()
+        {
+            var allUsers = await dbContext.Users
+                .Select(u => new UserViewModel()
+                {
+                    Id = u.Id.ToString(),
+                    Email = u.Email,
+                    FullName = u.FirstName + " " + u.LastName,
+                }).ToListAsync();
+
+            foreach (var user in allUsers)
+            {
+                user.IsAdmin = await dbContext.UserRoles
+                    .AnyAsync(u => u.UserId.ToString() == user.Id);
+                
+                var employer = await dbContext.Employers
+                    .FirstOrDefaultAsync(e => e.UserId.ToString() == user.Id);
+
+                if (employer != null)
+                {
+                    user.PhoneNumber = employer.PhoneNumber;
+                }
+            }
+
+            return allUsers;
         }
 
         public async Task<bool> HasAppliedForThatJobAsync(string userId, string jobId)

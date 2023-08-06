@@ -1,6 +1,7 @@
 ﻿namespace JobPortal.Sevices.Data.Interfaces
 {
-    using JobPortal.Web.ViewModels.Job;
+    using Web.ViewModels.Job;
+    using Web.ViewModels.User;
 
     public interface IUserService
     {
@@ -11,5 +12,7 @@
         Task<IEnumerable<JobViewModel>> GetAllJobsByCandidateIdAsync(string candidateId);
         
         Task<string> GetFullNameByEmailAsync(string email);
+        
+        Task<IEnumerable<UserViewModel>> GetAllAsync();
     }
 }
