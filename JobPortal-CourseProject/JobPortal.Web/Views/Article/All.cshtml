@@ -1,6 +1,37 @@
+@using JobPortal.Web.Infrastructure.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<ArticleViewModel>;
 @{
     ViewBag.Title = "All Articles";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
+
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">No articles found!</h2>
+}
+
+<div class="row">
+    @foreach (var article in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body text-center">
+                    <h4 class="p-2">@article.Title</h4>
+                    <h6 class="fst-italic">@article.Summary</h6>
+                    <br/>
+                    <a asp-area="" asp-controller="Article" asp-action="Read" asp-route-id="@article.Id"  class="btn btn-primary">Read</a>
+
+                    @if (User.IsAdmin())
+                    {
+                        <a asp-area="Admin" asp-controller="Article" asp-action="Edit" asp-route-id="@article.Id" class="btn btn-warning">Edit</a>
+                        <a asp-area="Admin" asp-controller="Article" asp-action="Delete" asp-route-id="@article.Id" class="btn btn-danger">Delete</a>
+                    }
+                </div>
+    </div>
+</div>
+    }
+</div>

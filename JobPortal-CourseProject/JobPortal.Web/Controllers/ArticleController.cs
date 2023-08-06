@@ -1,14 +1,24 @@
 namespace JobPortal.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    
+    using Sevices.Data.Interfaces;
+
     public class ArticleController : Controller
     {
+        private readonly IArticleService articleService;
+
+        public ArticleController(IArticleService articleService)
+        {
+            this.articleService = articleService;
+        }
+        
         
         [HttpGet]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            return View();
+            var viewModel = await articleService.GetAllAsync();
+            
+            return View(viewModel);
         }
     }
 }
