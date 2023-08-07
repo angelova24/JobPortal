@@ -1,5 +1,4 @@
 ﻿@using JobPortal.Sevices.Data.Interfaces;
-@using JobPortal.Web.Infrastructure.Extensions;
 @using static JobPortal.Common.GeneralApplicationConstants;
 
 @inject IEmployerService EmployerService
@@ -32,7 +31,7 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Job" asp-action="All">All Jobs</a>
                 </li>
-                @if (User.Identity?.IsAuthenticated ?? false)
+                @if (isUserEmployer || User.IsAdmin())
                 {
                     @if (!User.IsAdmin())
                     {
@@ -40,19 +39,29 @@
                             <a class="nav-link" asp-area="" asp-controller="User" asp-action="MyApplications">My Applications</a>
                         </li>
                     }
-                    @if (isUserEmployer)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Employer" asp-action="MyJobOffers">My Job Offers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Job" asp-action="Add">Add Job</a>
-                        </li>
-                    }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Employer" asp-action="MyJobOffers">My Job Offers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Job" asp-action="Add">Add Job</a>
+                    </li>
+                    
                 }
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Article" asp-action="All">All Articles</a>
                 </li>
+                @if (User.IsAdmin())
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Article" asp-action="MyArticles">My Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Article" asp-action="Add">Add Article</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="All">All Users</a>
+                    </li>
+                }
             </ul>
             <partial name="_LoginPartial"/>
         </div>
