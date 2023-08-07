@@ -33,9 +33,10 @@
         {
             var userApplicationJobs = await dbContext.UserJobs
                 .Where(uj => uj.CandidateId.ToString() == candidateId)
-                .Select(uj => new JobViewModel()
+                .Select(uj => new JobUserApplication()
                 {
                     Id = uj.JobId.ToString(),
+                    ApplicationDate = uj.CreatedOn,
                     Title = uj.Job.Title,
                     Salary = uj.Job.Salary,
                     CompanyName = uj.Job.Employer.CompanyName,

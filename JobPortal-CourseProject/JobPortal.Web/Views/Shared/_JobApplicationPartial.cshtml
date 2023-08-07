@@ -1,0 +1,35 @@
+@model JobUserApplication
+
+<div class="row">
+    <div class="alert alert-primary mb-3">
+        <div class="d-flex justify-content-between">
+            <div class="text-lg fw-bold">@Model.Title</div>
+            <div class="fst-italic">@Model.CreatedOn.ToString("dd/MM/yy HH:mm")</div>
+        </div>
+        <div>
+            <i class="bi bi-cash-stack"></i>
+            @if (Model.Salary == null)
+            {
+                <span> – EUR</span>
+            }
+            else
+            {
+                <span>@($"{Model.Salary:f2}") EUR</span>
+            }
+        </div>
+        <div>
+            <i class="bi bi-buildings"></i>
+            @Model.CompanyName
+        </div>
+        <div>
+            <i class="bi bi-geo-alt"></i>
+            @Model.CompanyAddress
+        </div>
+        <div class="d-flex justify-content-between">
+            <a asp-area="" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id" class="w-auto btn btn-primary mt-1">
+                Details
+            </a>
+            <div class="fst-italic align-self-end">Applied on: @Model.ApplicationDate.ToString("dd/MM/yy HH:mm")</div>
+        </div>
+    </div>
+</div>

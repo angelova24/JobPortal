@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JobViewModel>;
+﻿@model IEnumerable<JobUserApplication>;
 
 @{
     ViewData["Title"] = "My job applications";
@@ -19,7 +19,7 @@ else
     <div class="col">
         @foreach (var job in Model)
         {
-            <partial name="_JobPartial" model="job" />
+            <partial name="_JobApplicationPartial" model="job" />
         }
     </div>
 }
