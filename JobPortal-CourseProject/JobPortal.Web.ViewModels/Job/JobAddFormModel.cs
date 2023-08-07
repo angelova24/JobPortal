@@ -23,6 +23,7 @@
         [StringLength(RequirementsMaxLenght, MinimumLength = RequirementsMinLenght)]
         public string Requirements { get; set; } = null!;
 
+        [Display(Name = "Salary per month")]
         public int? Salary { get; set; }
 
         [Required]

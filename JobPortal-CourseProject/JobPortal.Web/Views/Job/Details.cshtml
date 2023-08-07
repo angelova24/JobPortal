@@ -23,7 +23,14 @@
         <div class="fw-bold fst-italic">Salary per month</div>
         <div>
             <i class="bi bi-cash-stack"></i>
-            @Model.Salary
+            @if (Model.Salary == null)
+            {
+                <span> – EUR</span>
+            }
+            else
+            {
+                <span>@($"{Model.Salary:f2}") EUR</span>
+            }
         </div>
         <div class="fw-bold fst-italic">Employer info</div>
         <div>
