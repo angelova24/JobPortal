@@ -3,8 +3,8 @@
 namespace JobPortal.Web.Controllers
 {
     using JobPortal.Sevices.Data.Interfaces;
-    using JobPortal.Web.Infrastructure.Extensions;
-    using JobPortal.Web.ViewModels.Employer;
+    using Infrastructure.Extensions;
+    using ViewModels.Employer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -23,11 +23,11 @@ namespace JobPortal.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Become()
         {
-            var userId = this.User.GetId()!;
+            var userId = User.GetId()!;
 
             try
             {
-                var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(userId);
+                var isEmployer = await employerService.EmployerExistsByUserIdAsync(userId);
 
                 if (isEmployer)
                 {
@@ -46,8 +46,8 @@ namespace JobPortal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Become(BecomeEmployerFormModel model)
         {
-            var userId = this.User.GetId()!;
-            var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(userId);
+            var userId = User.GetId()!;
+            var isEmployer = await employerService.EmployerExistsByUserIdAsync(userId);
 
             if (isEmployer)
             {
@@ -56,20 +56,20 @@ namespace JobPortal.Web.Controllers
             }
 
             var isPhoneNumberTaken =
-                await this.employerService.EmployerExistsByPhoneNumberAsync(model.PhoneNumber);
+                await employerService.EmployerExistsByPhoneNumberAsync(model.PhoneNumber);
             if (isPhoneNumberTaken)
             {
-                this.ModelState.AddModelError(nameof(model.PhoneNumber), "Employer with the provided phone number already exists!");
+                ModelState.AddModelError(nameof(model.PhoneNumber), "Employer with the provided phone number already exists!");
             }
 
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.View(model);
+                return View(model);
             }
 
             try
             {
-                await this.employerService.CreateAsync(userId, model);
+                await employerService.CreateAsync(userId, model);
             }
             catch (Exception)
             {
@@ -83,8 +83,8 @@ namespace JobPortal.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> MyJobOffers()
         {
-            var userId = this.User.GetId()!;
-            var isEmployer = await this.employerService.EmployerExistsByUserIdAsync(userId);
+            var userId = User.GetId()!;
+            var isEmployer = await employerService.EmployerExistsByUserIdAsync(userId);
 
             if (!isEmployer)
             {
@@ -94,8 +94,8 @@ namespace JobPortal.Web.Controllers
 
             try
             {
-                var employerId = await this.employerService.GetEmployerIdByUserIdAsync(userId);
-                var jobOffers = await this.employerService.GetAllJobsByEmployerIdAsync(employerId!);
+                var employerId = await employerService.GetEmployerIdByUserIdAsync(userId);
+                var jobOffers = await employerService.GetAllJobsByEmployerIdAsync(employerId!);
 
                 return View(jobOffers);
             }
@@ -104,7 +104,7 @@ namespace JobPortal.Web.Controllers
                 return GeneralError();
             }
         }
-        
+
         private IActionResult GeneralError()
         {
             toastNotification.Error("Unexpected error occurred! Please try again later or contact administrator");
