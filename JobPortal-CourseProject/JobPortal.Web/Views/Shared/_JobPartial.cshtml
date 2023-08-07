@@ -32,7 +32,7 @@
             <i class="bi bi-geo-alt"></i>
             @Model.CompanyAddress
         </div>
-        <a asp-area="" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id" class="w-auto btn btn-primary mt-1">
+        <a asp-area="" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id" class="w-auto btn btn-dark mt-1">
             Details
         </a>
         @if (isAuthorOfTheJob || User.IsAdmin())
