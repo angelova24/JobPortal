@@ -46,25 +46,30 @@
             <i class="bi bi-geo-alt"></i>
             @Model.EmployerInfo.CompanyAddress
         </div>
-        @if (isAuthorOfTheJob || User.IsAdmin())
-        {
-            <a class="w-auto btn btn-warning mt-1" asp-area="" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-            <form class="d-inline-block w-auto" asp-area="" asp-controller="Job" asp-action="Delete" asp-route-id="@Model.Id">
-                <input type="submit" value="Delete" class="btn btn-danger mt-1"
-                       onclick="return confirm('Are you sure you want to delete job: @Model.Title')"/>
+        <div class="d-flex gap-2 justify-content-between">
+            <div>
+            @if (isAuthorOfTheJob || User.IsAdmin())
+            {
+                <a class="w-auto btn btn-warning mt-1" asp-area="" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                <form class="d-inline-block w-auto" asp-area="" asp-controller="Job" asp-action="Delete" asp-route-id="@Model.Id">
+                    <input type="submit" value="Delete" class="btn btn-danger mt-1"
+                           onclick="return confirm('Are you sure you want to delete job: @Model.Title')"/>
                 </form>
-        }
-        @if (!isAuthorOfTheJob && !hasApplied && !User.IsAdmin())
-        {
-            <form asp-action="ApplyForJob" asp-area="" asp-controller="User" asp-route-jobId="@Model.Id">
-                <button class="btn btn-primary mt-1" name="button">Apply</button>
-            </form>
-        }
-        @if (hasApplied)
-        {
-            <p></p>
-            <div class="fw-bold">You have already applied for that job!</div>
-            <a class="w-auto btn btn-primary mt-1" asp-area="" asp-controller="User" asp-action="MyApplications">Go to applications</a>
-        }
+            }
+            @if (!isAuthorOfTheJob && !hasApplied && !User.IsAdmin())
+            {
+                <form asp-action="ApplyForJob" asp-area="" asp-controller="User" asp-route-jobId="@Model.Id">
+                    <button class="btn btn-primary mt-1" name="button">Apply</button>
+                </form>
+            }
+            @if (hasApplied)
+            {
+                <p></p>
+                <div class="fw-bold">You have already applied for that job!</div>
+                <a class="w-auto btn btn-primary mt-1" asp-area="" asp-controller="User" asp-action="MyApplications">Go to applications</a>
+            }
+            </div>
+            <span class="d-flex fst-italic align-self-end">@Model.CreatedOn.ToString("dd/MM/yy HH:mm")</span>
+        </div>
     </div>
 </div>

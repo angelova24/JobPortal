@@ -118,7 +118,8 @@
                     Title = j.Title,
                     Salary = j.Salary,
                     CompanyName = j.Employer.CompanyName,
-                    CompanyAddress = j.Employer.CompanyAddress
+                    CompanyAddress = j.Employer.CompanyAddress,
+                    CreatedOn = j.CreatedOn
                 })
                 .ToListAsync();
 
@@ -145,6 +146,7 @@
                 Description = job.Description,
                 Requirements = job.Requirements,
                 Salary = job.Salary,
+                CreatedOn = job.CreatedOn,
                 EmployerInfo = new EmployerInfoViewModel()
                 {
                     Name = job.Employer.User.FirstName + " " + job.Employer.User.LastName,

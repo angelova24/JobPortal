@@ -13,6 +13,8 @@
         public string Requirements { get; set; } = null!;
 
         public int? Salary { get; set; }
+        
+        public DateTime CreatedOn { get; set; }
 
         public EmployerInfoViewModel EmployerInfo { get; set; } = null!;
     }

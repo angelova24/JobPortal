@@ -11,5 +11,7 @@
         public string CompanyName { get; set; } = null!;
 
         public string CompanyAddress { get; set; } = null!;
+
+        public DateTime CreatedOn { get; set; }
     }
 }

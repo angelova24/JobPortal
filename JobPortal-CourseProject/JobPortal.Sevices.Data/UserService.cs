@@ -39,7 +39,8 @@
                     Title = uj.Job.Title,
                     Salary = uj.Job.Salary,
                     CompanyName = uj.Job.Employer.CompanyName,
-                    CompanyAddress = uj.Job.Employer.CompanyAddress
+                    CompanyAddress = uj.Job.Employer.CompanyAddress,
+                    CreatedOn = uj.Job.CreatedOn
                 })
                 .ToListAsync();
 
