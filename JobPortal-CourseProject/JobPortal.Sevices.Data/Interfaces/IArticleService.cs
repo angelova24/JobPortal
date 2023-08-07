@@ -5,5 +5,9 @@ namespace JobPortal.Sevices.Data.Interfaces
     public interface IArticleService
     {
         Task<IEnumerable<ArticleViewModel>> GetAllAsync();
+        
+        Task<ArticleDetailsViewModel> GetByIdAsync(string id);
+        
+        Task<bool> ExistsByIdAsync(string id);
     }
 }

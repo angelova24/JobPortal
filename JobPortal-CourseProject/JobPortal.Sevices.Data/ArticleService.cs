@@ -29,5 +29,36 @@ namespace JobPortal.Sevices.Data
 
             return articles;
         }
+
+        public async Task<ArticleDetailsViewModel> GetByIdAsync(string id)
+        {
+            var article = await dbContext.Articles
+                .Include(a => a.Author)
+                .FirstAsync(a => a.Id.ToString() == id);
+
+            var articleModel = new ArticleDetailsViewModel()
+            {
+                Id = article.Id.ToString(),
+                Title = article.Title,
+                Summary = article.Summary,
+                Text = article.Text,
+                CreatedOn = article.CreatedOn,
+                AuthorName = article.Author.FirstName + " " + article.Author.LastName
+            };
+
+            return articleModel;
+        }
+
+        public async Task<bool> ExistsByIdAsync(string id)
+        {
+            var article = await dbContext.Articles.FirstOrDefaultAsync(a => a.Id.ToString() == id);
+
+            if (article == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
