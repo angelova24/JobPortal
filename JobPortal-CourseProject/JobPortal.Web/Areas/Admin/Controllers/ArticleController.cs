@@ -1,10 +1,18 @@
 namespace JobPortal.Web.Areas.Admin.Controllers
 {
+    using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Mvc;
+    using Sevices.Data.Interfaces;
 
     public class ArticleController : BaseAdminController
     {
-        
+        private readonly IArticleService articleService;
+
+        public ArticleController(IArticleService articleService)
+        {
+            this.articleService = articleService;
+        }
+
         [HttpGet]
         public IActionResult Add()
         {
@@ -12,9 +20,11 @@ namespace JobPortal.Web.Areas.Admin.Controllers
         }
         
         [HttpGet]
-        public IActionResult MyArticles()
+        public async Task<IActionResult> MyArticles()
         {
-            return View();
+            var viewModel = await articleService.GetAllByAuthorIdAsync(User.GetId()!);
+            
+            return View(viewModel);
         }
     }
 }

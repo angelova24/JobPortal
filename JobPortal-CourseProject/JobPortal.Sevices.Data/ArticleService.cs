@@ -60,5 +60,22 @@ namespace JobPortal.Sevices.Data
 
             return true;
         }
+
+        public async Task<IEnumerable<ArticleViewModel>> GetAllByAuthorIdAsync(string id)
+        {
+            var articles = await dbContext.Articles
+                .Where(a => a.AuthorId.ToString() == id)
+                .Select(a => new ArticleViewModel()
+                {
+                    Id = a.Id.ToString(),
+                    Title = a.Title,
+                    Summary = a.Summary,
+                    CreatedOn = a.CreatedOn
+                })
+                .OrderByDescending(a => a.CreatedOn)
+                .ToListAsync();
+
+            return articles;
+        }
     }
 }

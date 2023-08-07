@@ -9,5 +9,7 @@ namespace JobPortal.Sevices.Data.Interfaces
         Task<ArticleDetailsViewModel> GetByIdAsync(string id);
         
         Task<bool> ExistsByIdAsync(string id);
+        
+        Task<IEnumerable<ArticleViewModel>> GetAllByAuthorIdAsync(string id);
     }
 }

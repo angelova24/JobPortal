@@ -1,5 +1,3 @@
-@using JobPortal.Web.Infrastructure.Extensions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<ArticleViewModel>;
 @{
     ViewBag.Title = "All Articles";
@@ -32,7 +30,7 @@
                         <a asp-area="Admin" asp-controller="Article" asp-action="Delete" asp-route-id="@article.Id" class="btn btn-danger">Delete</a>
                     }
                 </div>
-    </div>
-</div>
+            </div>
+        </div>
     }
 </div>
