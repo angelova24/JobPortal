@@ -29,7 +29,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<JobViewModel>> GetAllJobsByCandidateIdAsync(string candidateId)
+        public async Task<IEnumerable<JobUserApplication>> GetAllJobsByCandidateIdAsync(string candidateId)
         {
             var userApplicationJobs = await dbContext.UserJobs
                 .Where(uj => uj.CandidateId.ToString() == candidateId)
@@ -88,10 +88,37 @@
             return allUsers;
         }
 
+        public async Task<bool> ApplicationExistsAsync(string userId, string jobId)
+        {
+            var application = await dbContext.UserJobs
+                .FirstOrDefaultAsync(uj => uj.CandidateId.ToString() == userId &&
+                                           uj.JobId.ToString() == jobId);
+            if (application == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task DeleteApplicationAsync(string userId, string jobId)
+        {
+            var application = await dbContext.UserJobs
+                .FirstOrDefaultAsync(uj => uj.CandidateId.ToString() == userId &&
+                                           uj.JobId.ToString() == jobId);
+            
+            if (application != null)
+            {
+                dbContext.UserJobs.Remove(application);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task<bool> HasAppliedForThatJobAsync(string userId, string jobId)
         {
             var candidature = await dbContext.UserJobs
-                .FirstOrDefaultAsync(x => x.CandidateId.ToString() == userId && x.JobId.ToString() == jobId);
+                .FirstOrDefaultAsync(x => x.CandidateId.ToString() == userId &&
+                                          x.JobId.ToString() == jobId);
 
             if (candidature == null)
             {

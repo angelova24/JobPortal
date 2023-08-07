@@ -9,10 +9,14 @@
 
         Task<bool> HasAppliedForThatJobAsync(string userId, string jobId);
 
-        Task<IEnumerable<JobViewModel>> GetAllJobsByCandidateIdAsync(string candidateId);
+        Task<IEnumerable<JobUserApplication>> GetAllJobsByCandidateIdAsync(string candidateId);
         
         Task<string> GetFullNameByEmailAsync(string email);
         
         Task<IEnumerable<UserViewModel>> GetAllAsync();
+
+        Task<bool> ApplicationExistsAsync(string userId, string jobId);
+        
+        Task DeleteApplicationAsync(string userId, string jobId);
     }
 }

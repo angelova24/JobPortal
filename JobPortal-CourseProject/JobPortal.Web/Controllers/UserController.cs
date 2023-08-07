@@ -166,5 +166,43 @@ namespace JobPortal.Web.Controllers
 
             return Redirect(model.ReturnUrl ?? "/Home/Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteApplication(string id)
+        {
+            var jobExists = await jobService.ExistsByIdAsync(id);
+
+            if (!jobExists)
+            {
+                toastNotification.Error("Job with the provided id does not exist!");
+                return RedirectToAction("MyApplications", "User");
+            }
+
+            var applicationExists = await userService.ApplicationExistsAsync(User.GetId()!, id);
+
+            if (applicationExists)
+            {
+                try
+                {
+                    await userService.DeleteApplicationAsync(User.GetId()!, id);
+                    toastNotification.Success("Application was successfully deleted!");
+                    return RedirectToAction("MyApplications", "User");
+                }
+                catch (Exception)
+                {
+                    return GeneralError();
+                }
+            }
+            
+            toastNotification.Error("Application was not found!");
+            return RedirectToAction("MyApplications", "User");
+        }
+        
+        private IActionResult GeneralError()
+        {
+            toastNotification.Error("Unexpected error occurred! Please try again later or contact administrator");
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
