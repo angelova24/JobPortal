@@ -1,7 +1,8 @@
 ﻿namespace JobPortal.Sevices.Data.Interfaces
 {
-    using JobPortal.Web.ViewModels.Employer;
-    using JobPortal.Web.ViewModels.Job;
+    using Web.ViewModels.Employer;
+    using Web.ViewModels.Job;
+    using Web.ViewModels.User;
 
     public interface IEmployerService
     {
@@ -16,5 +17,7 @@
         Task<IEnumerable<JobViewModel>> GetAllJobsByEmployerIdAsync(string employerId);
 
         Task<bool> IsAuthorOfJobByUserIdAsync(string userId, string jobId);
+        
+        Task<IEnumerable<CandidateViewModel>> GetAllCandidatesByJobIdAsync(string jobId);
     }
 }

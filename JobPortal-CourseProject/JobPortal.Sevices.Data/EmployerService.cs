@@ -2,12 +2,13 @@
 {
     using JobPortal.Data;
     using JobPortal.Data.Models;
-    using JobPortal.Sevices.Data.Interfaces;
-    using JobPortal.Web.ViewModels.Employer;
-    using JobPortal.Web.ViewModels.Job;
+    using Interfaces;
+    using Web.ViewModels.Employer;
+    using Web.ViewModels.Job;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Web.ViewModels.User;
 
     public class EmployerService : IEmployerService
     {
@@ -27,21 +28,21 @@
                 UserId = Guid.Parse(userId)
             };
 
-            await this.dbContext.AddAsync(newEmployer);
-            await this.dbContext.SaveChangesAsync();
+            await dbContext.AddAsync(newEmployer);
+            await dbContext.SaveChangesAsync();
         }
 
 
         public async Task<bool> EmployerExistsByPhoneNumberAsync(string phoneNumber)
         {
-            var result = await this.dbContext.Employers.AnyAsync(e => e.PhoneNumber == phoneNumber);
+            var result = await dbContext.Employers.AnyAsync(e => e.PhoneNumber == phoneNumber);
 
             return result;
         }
 
         public async Task<bool> EmployerExistsByUserIdAsync(string userId)
         {
-            var result = await this.dbContext.Employers.AnyAsync(e => e.UserId.ToString() == userId);
+            var result = await dbContext.Employers.AnyAsync(e => e.UserId.ToString() == userId);
 
             return result;
         }
@@ -71,6 +72,7 @@
                     CompanyAddress = j.Employer.CompanyAddress,
                     CreatedOn = j.CreatedOn
                 })
+                .OrderByDescending(j => j.CreatedOn)
                 .ToListAsync();
 
             return allEmployerJobs;
@@ -81,6 +83,23 @@
             var isAuthor = await dbContext.Jobs.AnyAsync(j => j.Id.ToString() == jobId && j.Employer.UserId.ToString() == userId);
 
             return isAuthor;
+        }
+
+        public async Task<IEnumerable<CandidateViewModel>> GetAllCandidatesByJobIdAsync(string jobId)
+        {
+            var candidates = await dbContext.UserJobs
+                .Where(uj => uj.JobId.ToString() == jobId)
+                .Select(uj => new CandidateViewModel()
+                {
+                    Id = uj.CandidateId.ToString(),
+                    FullName = uj.Candidate.FirstName + " " + uj.Candidate.LastName,
+                    Email = uj.Candidate.Email,
+                    ApplicationDate = uj.CreatedOn
+                })
+                .OrderBy(c => c.ApplicationDate)
+                .ToListAsync();
+
+            return candidates;
         }
     }
 }

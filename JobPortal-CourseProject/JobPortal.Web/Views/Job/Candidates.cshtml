@@ -1,0 +1,28 @@
+@model IEnumerable<CandidateViewModel>
+
+@{
+    ViewBag.Title = "All Candidates";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th><label>Full name</label></th>
+        <th><label>Email</label></th>
+        <th><label>Application date</label></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var candidate in Model)
+    {
+        <tr>
+            <td><label>@candidate.FullName</label></td>
+            <td><label>@candidate.Email</label></td>
+            <td><label>@candidate.ApplicationDate.ToString("dd/MM/yy HH:mm")</label></td>
+        </tr>
+    }
+    </tbody>
+</table>

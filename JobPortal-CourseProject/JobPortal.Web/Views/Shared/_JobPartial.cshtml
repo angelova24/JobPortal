@@ -35,6 +35,12 @@
         <a asp-area="" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id" class="w-auto btn btn-dark mt-1">
             Details
         </a>
+        @if (isAuthorOfTheJob)
+        {
+            <a asp-area="" asp-controller="Job" asp-action="Candidates" asp-route-id="@Model.Id" class="w-auto btn btn-info mt-1">
+                See all candidates
+            </a>
+        }
         @if (isAuthorOfTheJob || User.IsAdmin())
         {
             <a asp-area="" asp-controller="Job" asp-action="Edit" asp-route-id="@Model.Id" class="w-auto btn btn-warning mt-1">

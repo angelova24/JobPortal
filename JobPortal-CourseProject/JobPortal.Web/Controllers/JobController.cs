@@ -262,6 +262,35 @@ namespace JobPortal.Web.Controllers
             }
         }
         
+        public async Task<IActionResult> Candidates(string id)
+        {
+            var jobExists = await jobService.ExistsByIdAsync(id);
+
+            if (!jobExists)
+            {
+                toastNotification.Error("Job with the provided id does not exist!");
+                return RedirectToAction("All", "Job");
+            }
+            
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(User.GetId()!, id);
+
+            if (!isAuthorOfJob)
+            {
+                toastNotification.Error("You must be the author of the job in order to see the candidates!");
+                return RedirectToAction("All", "Job");
+            }
+            
+            try
+            {
+                var model = await employerService.GetAllCandidatesByJobIdAsync(id);
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
+        }
+        
         private IActionResult GeneralError()
         {
             toastNotification.Error("Unexpected error occurred! Please try again later or contact administrator");
