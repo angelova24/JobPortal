@@ -26,9 +26,15 @@
             @Model.CompanyAddress
         </div>
         <div class="d-flex justify-content-between">
-            <a asp-area="" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id" class="w-auto btn btn-primary mt-1">
-                Details
-            </a>
+            <div>
+                <a asp-area="" asp-controller="Job" asp-action="Details" asp-route-id="@Model.Id" class="w-auto btn btn-dark mt-1">
+                    Details
+                </a>
+                <form asp-area="" asp-controller="User" asp-action="DeleteApplication" asp-route-id="@Model.Id" class="d-inline-block w-auto">
+                    <input type="submit" value="Delete application" class="btn btn-danger mt-1"
+                           onclick="return confirm('Are you sure you want to delete your application for: @Model.Title')"/>
+                </form>
+            </div>
             <div class="fst-italic align-self-end">Applied on: @Model.ApplicationDate.ToString("dd/MM/yy HH:mm")</div>
         </div>
     </div>
