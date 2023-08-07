@@ -21,8 +21,10 @@ namespace JobPortal.Sevices.Data
                 {
                     Id = a.Id.ToString(),
                     Title = a.Title,
-                    Summary = a.Summary
+                    Summary = a.Summary,
+                    CreatedOn = a.CreatedOn
                 })
+                .OrderByDescending(a => a.CreatedOn)
                 .ToListAsync();
 
             return articles;

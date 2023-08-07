@@ -7,5 +7,7 @@ namespace JobPortal.Web.ViewModels.Article
         public string Title { get; set; } = null!;
 
         public string Summary { get; set; } = null!;
+
+        public DateTime CreatedOn { get; set; }
     }
 }

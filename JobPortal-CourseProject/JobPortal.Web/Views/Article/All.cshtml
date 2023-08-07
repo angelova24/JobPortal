@@ -22,8 +22,9 @@
                 <div class="card-body text-center">
                     <h4 class="p-2">@article.Title</h4>
                     <h6 class="fst-italic">@article.Summary</h6>
+                    <i class="text-secondary">@article.CreatedOn.ToString("dd-MM-yy HH:mm")</i>
                     <br/>
-                    <a asp-area="" asp-controller="Article" asp-action="Read" asp-route-id="@article.Id"  class="btn btn-primary">Read</a>
+                    <a asp-area="" asp-controller="Article" asp-action="Read" asp-route-id="@article.Id" class="btn btn-info">Read</a>
 
                     @if (User.IsAdmin())
                     {
