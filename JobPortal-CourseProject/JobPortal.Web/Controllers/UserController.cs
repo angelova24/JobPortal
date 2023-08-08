@@ -37,7 +37,7 @@ namespace JobPortal.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ApplyForJob(string jobId)
+        public async Task<IActionResult> ApplyForJob(string id, IFormFile upload)
         {
             if (User.IsAdmin())
             {
@@ -46,35 +46,46 @@ namespace JobPortal.Web.Controllers
                 return RedirectToAction("All", "Job");
             }
             
-            var jobExists = await jobService.ExistsByIdAsync(jobId);
-
+            var jobExists = await jobService.ExistsByIdAsync(id);
+            
             if (!jobExists)
             {
                 toastNotification.Error("Job with provided id does not exists! Please try again!");
                 
                 return RedirectToAction("All", "Job");
             }
-
+            
             var userId = User.GetId()!;
-            var alreadyApplied = await userService.HasAppliedForThatJobAsync(userId, jobId);
-            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(userId, jobId);
+            var alreadyApplied = await userService.HasAppliedForThatJobAsync(userId, id);
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(userId, id);
             
             if (alreadyApplied || isAuthorOfJob)
             {
                 toastNotification.Error(alreadyApplied ? "You have already applied for that job!" : "You are the owner of that job!");
                 return RedirectToAction("Index", "Home");
             }
-
-            try
-            {
-                await userService.ApplyForJobAsync(userId, jobId);
-                return RedirectToAction("MyApplications", "User");
+            
+            if (upload != null && upload.Length > 0)
+            {                
+                var fileName = Path.GetFileName(upload.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CVs", fileName);
+                
+                try
+                {
+                    await userService.ApplyForJobAsync(userId, id, filePath);
+                    await using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await upload.CopyToAsync(fileStream);
+                    }
+                    toastNotification.Success("Successfully applied!");
+                    return RedirectToAction("MyApplications", "User");
+                }
+                catch (Exception)
+                {
+                    GeneralError();
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw;
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

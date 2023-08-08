@@ -5,7 +5,7 @@
 
     public interface IUserService
     {
-        Task ApplyForJobAsync(string userId, string jobId);
+        Task ApplyForJobAsync(string userId, string jobId, string filePath);
 
         Task<bool> HasAppliedForThatJobAsync(string userId, string jobId);
 

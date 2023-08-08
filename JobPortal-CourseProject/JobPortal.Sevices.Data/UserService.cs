@@ -17,14 +17,15 @@
             this.dbContext = dbContext;
         }
 
-        public async Task ApplyForJobAsync(string userId, string jobId)
+        public async Task ApplyForJobAsync(string userId, string jobId, string filePath)
         {
             var candidature = new UserJobs()
             {
                 CandidateId = Guid.Parse(userId),
-                JobId = Guid.Parse(jobId)
+                JobId = Guid.Parse(jobId),
+                FilePath = filePath,
             };
-
+            
             await dbContext.UserJobs.AddAsync(candidature);
             await dbContext.SaveChangesAsync();
         }

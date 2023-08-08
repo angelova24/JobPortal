@@ -63,9 +63,15 @@
                 }
                 @if (!isAuthorOfTheJob && !hasApplied && !User.IsAdmin())
                 {
-                    <form asp-action="ApplyForJob" asp-area="" asp-controller="User" asp-route-jobId="@Model.Id">
-                        <button class="btn btn-primary mt-1" name="button">Apply</button>
-                    </form>
+                    <div class="mt-3">
+                        <div class="fw-bold mb-2">Please upload your CV as PDF file!</div>
+                        @using (Html.BeginForm(actionName: "ApplyForJob", controllerName: "User", method: FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.HiddenFor(x => x.Id)
+                            <input type="file" name="upload"/>
+                            <button type="submit" class="btn btn-primary" name="button">Apply</button>
+                        }
+                    </div>
                 }
                 @if (hasApplied)
                 {
