@@ -1,6 +1,4 @@
 ﻿@using JobPortal.Sevices.Data.Interfaces
-@using JobPortal.Web.Infrastructure.Extensions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model JobDetailsViewModel
 @inject IEmployerService EmployerService
 @inject IUserService UserService
@@ -18,9 +16,9 @@
         <i class="float-end">@Model.CreatedOn.ToString("dd/MM/yy HH:mm")</i>
         <div class="text-lg fw-bold text-center">@Model.Title</div>
         <div class="fw-bold fst-italic">Description</div>
-        <div>@Model.Description</div>
+        <div>@Markdown.ParseHtmlString(Model.Description)</div>
         <div class="fw-bold fst-italic">Requirements</div>
-        <div>@Model.Requirements</div>
+        <div>@Markdown.ParseHtmlString(Model.Requirements)</div>
         <div class="fw-bold fst-italic">Salary per month</div>
         <div>
             <i class="bi bi-cash-stack"></i>
