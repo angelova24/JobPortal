@@ -2,6 +2,7 @@ namespace JobPortal.Sevices.Data
 {
     using Interfaces;
     using JobPortal.Data;
+    using JobPortal.Data.Models;
     using Microsoft.EntityFrameworkCore;
     using Web.ViewModels.Article;
 
@@ -76,6 +77,22 @@ namespace JobPortal.Sevices.Data
                 .ToListAsync();
 
             return articles;
+        }
+
+        public async Task<string> CreateAndReturnIdAsync(string userId, ArticleAddFormModel model)
+        {
+            var newArticle = new Article()
+            {
+                Title = model.Title,
+                Summary = model.Summary,
+                Text = model.Text,
+                AuthorId = Guid.Parse(userId)
+            };
+
+            await dbContext.Articles.AddAsync(newArticle);
+            await dbContext.SaveChangesAsync();
+
+            return newArticle.Id.ToString();
         }
     }
 }
