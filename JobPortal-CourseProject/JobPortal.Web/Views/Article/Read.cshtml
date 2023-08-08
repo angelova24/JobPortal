@@ -11,7 +11,7 @@
         <br/>
         <div class="fst-italic">@Model.Summary</div>
         <br/>
-        <div>@Model.Text</div>
+        <div>@Markdown.ParseHtmlString(Model.Text)</div>
         <div class="fw-bold fst-italic">Author: @Model.AuthorName</div>
     </div>
 </div>

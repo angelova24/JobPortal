@@ -8,6 +8,7 @@ using JobPortal.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Westwind.AspNetCore.Markdown;
 using static JobPortal.Common.GeneralApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +41,10 @@ builder.Services.AddNotyf(config =>
     config.IsDismissable = true;
     config.Position = NotyfPosition.BottomCenter;
 });
+
+builder.Services.AddMarkdown();
+builder.Services.AddMvc()
+    .AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
 
 builder.Services.ConfigureApplicationCookie(config =>
 {
@@ -74,6 +79,8 @@ else
     app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
     app.UseHsts();
 }
+
+app.UseMarkdown();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
