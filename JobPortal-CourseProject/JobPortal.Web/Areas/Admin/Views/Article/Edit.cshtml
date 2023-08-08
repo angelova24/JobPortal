@@ -1,0 +1,20 @@
+@model ArticleAddFormModel
+@{
+    ViewBag.Title = "Edit Article";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<partial name="_ArticleAddPartial" model="@Model"/>
+
+@section Scripts
+{
+    <script>
+        tinymce.init({
+        selector: 'textarea#Text',
+        menubar: false,
+        content_css: 'css/content.css'});
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

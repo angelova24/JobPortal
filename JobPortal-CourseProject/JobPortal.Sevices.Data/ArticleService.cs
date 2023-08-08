@@ -94,5 +94,29 @@ namespace JobPortal.Sevices.Data
 
             return newArticle.Id.ToString();
         }
+
+        public async Task<ArticleAddFormModel> GetArticleForEditByIdAsync(string id)
+        {
+            var article = await dbContext.Articles
+                .FirstAsync(a => a.Id.ToString() == id);
+
+            return new ArticleAddFormModel
+            {
+                Title = article.Title,
+                Summary = article.Summary,
+                Text = article.Text
+            };
+        }
+
+        public async Task EditArticleById(string id, ArticleAddFormModel model)
+        {
+            var article = await dbContext.Articles.FirstAsync(a => a.Id.ToString() == id);
+
+            article.Title = model.Title;
+            article.Summary = model.Summary;
+            article.Text = model.Text;
+            
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

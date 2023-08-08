@@ -13,5 +13,9 @@ namespace JobPortal.Sevices.Data.Interfaces
         Task<IEnumerable<ArticleViewModel>> GetAllByAuthorIdAsync(string id);
         
         Task<string> CreateAndReturnIdAsync(string userId, ArticleAddFormModel model);
+        
+        Task<ArticleAddFormModel> GetArticleForEditByIdAsync(string id);
+        
+        Task EditArticleById(string id, ArticleAddFormModel model);
     }
 }
