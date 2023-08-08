@@ -17,5 +17,7 @@ namespace JobPortal.Sevices.Data.Interfaces
         Task<ArticleAddFormModel> GetArticleForEditByIdAsync(string id);
         
         Task EditArticleById(string id, ArticleAddFormModel model);
+        
+        Task DeleteArticleByIdAsync(string id);
     }
 }

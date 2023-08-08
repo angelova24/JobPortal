@@ -1,0 +1,22 @@
+@model ArticleViewModel
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <div class="card-body text-center">
+            <h4 class="p-2">@Model.Title</h4>
+            <h6 class="fst-italic">@Model.Summary</h6>
+            <i class="text-secondary">@Model.CreatedOn.ToString("dd-MM-yy HH:mm")</i>
+            <br/>
+            <a asp-area="" asp-controller="Article" asp-action="Read" asp-route-id="@Model.Id" class="btn btn-info">Read</a>
+
+            @if (User.IsAdmin())
+            {
+                <a asp-area="Admin" asp-controller="Article" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <form asp-area="Admin" asp-controller="Article" asp-action="Delete" asp-route-id="@Model.Id" class="d-inline-block w-auto">
+                    <input type="submit" value="Delete" class="btn btn-danger mt-1"
+                           onclick="return confirm('Are you sure you want to delete article: @Model.Title')"/>
+                </form>
+            }
+        </div>
+    </div>
+</div>

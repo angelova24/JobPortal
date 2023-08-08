@@ -6,7 +6,7 @@
 
 <div class="row pt-3">
     <div class="alert alert-secondary mb-3">
-        <i class="float-end">@Model.CreatedOn.ToString("dd/MM/yy HH:mm")</i>
+        <div class="d-flex justify-content-end fst-italic small">@Model.CreatedOn.ToString("dd/MM/yy HH:mm")</div>
         <div class="text-lg fw-bold text-center">@Model.Title</div>
         <br/>
         <div class="fst-italic">@Model.Summary</div>
@@ -15,3 +15,13 @@
         <div class="fw-bold fst-italic">Author: @Model.AuthorName</div>
     </div>
 </div>
+@if (User.IsAdmin())
+{
+    <div class="d-flex justify-content-center gap-2">
+    <a asp-area="Admin" asp-controller="Article" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <form asp-area="Admin" asp-controller="Article" asp-action="Delete" asp-route-id="@Model.Id" class="d-inline-block w-auto">
+        <input type="submit" value="Delete" class="btn btn-danger"
+               onclick="return confirm('Are you sure you want to delete article: @Model.Title')"/>
+    </form>
+    </div>
+}

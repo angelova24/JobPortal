@@ -107,6 +107,29 @@ namespace JobPortal.Web.Areas.Admin.Controllers
             
             return View(viewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var articleExists = await articleService.ExistsByIdAsync(id);
+
+            if (!articleExists)
+            {
+                toastNotification.Error("Article with the provided id does not exist!");
+                return RedirectToAction("All", "Article", new { Area = "" });
+            }
+
+            try
+            {
+                await articleService.DeleteArticleByIdAsync(id);
+                toastNotification.Success("Article was deleted successfully!");
+                return RedirectToAction("MyArticles", "Article");
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
+        }
         
         private IActionResult GeneralError()
         {

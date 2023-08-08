@@ -118,5 +118,16 @@ namespace JobPortal.Sevices.Data
             
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteArticleByIdAsync(string id)
+        {
+            var article = await dbContext.Articles.FindAsync(Guid.Parse(id));
+
+            if (article != null)
+            {
+                dbContext.Articles.Remove(article);
+                await dbContext.SaveChangesAsync();
+            }
+        }
     }
 }
