@@ -31,14 +31,14 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Job" asp-action="All">All Jobs</a>
                 </li>
-                @if (isUserEmployer || User.IsAdmin())
+                @if ((User.Identity?.IsAuthenticated ?? false) && !User.IsAdmin())
                 {
-                    @if (!User.IsAdmin())
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="MyApplications">My Applications</a>
-                        </li>
-                    }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="MyApplications">My Applications</a>
+                    </li>
+                }
+                @if (isUserEmployer)
+                {
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Employer" asp-action="MyJobOffers">My Job Offers</a>
                     </li>
