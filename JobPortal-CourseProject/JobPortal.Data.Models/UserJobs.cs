@@ -10,6 +10,8 @@
 
         public Job Job { get; set; } = null!;
 
+        public string FilePath { get; set; } = null!;
+        
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     }
 }
