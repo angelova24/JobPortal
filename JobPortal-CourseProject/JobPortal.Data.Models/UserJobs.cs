@@ -12,6 +12,6 @@
 
         public string FilePath { get; set; } = null!;
         
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
 }
