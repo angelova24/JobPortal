@@ -13,7 +13,7 @@
 
 <div class="row pt-3">
     <div class="alert alert-secondary mb-3">
-        <i class="float-end">@Model.CreatedOn.ToString("dd/MM/yy HH:mm")</i>
+        <div class="d-flex justify-content-end fst-italic small">@Model.CreatedOn.ToString("dd/MM/yy HH:mm")</div>
         <div class="text-lg fw-bold text-center">@Model.Title</div>
         <div class="fw-bold fst-italic">Description</div>
         <div>@Markdown.ParseHtmlString(Model.Description)</div>
@@ -60,25 +60,25 @@
                     <input type="submit" value="Delete" class="btn btn-danger mt-1"
                            onclick="return confirm('Are you sure you want to delete job: @Model.Title')"/>
                 </form>
-                }
-                @if (!isAuthorOfTheJob && !hasApplied && !User.IsAdmin())
-                {
-                    <div class="mt-3">
-                        <div class="fw-bold mb-2">Please upload your CV as PDF file!</div>
-                        @using (Html.BeginForm(actionName: "ApplyForJob", controllerName: "User", method: FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
-                        {
-                            @Html.HiddenFor(x => x.Id)
-                            <input type="file" name="upload"/>
-                            <button type="submit" class="btn btn-primary" name="button">Apply</button>
-                        }
-                    </div>
-                }
-                @if (hasApplied)
-                {
-                    <p></p>
-                    <div class="fw-bold">You have already applied for that job!</div>
-                    <a class="w-auto btn btn-primary mt-1" asp-area="" asp-controller="User" asp-action="MyApplications">Go to applications</a>
-                }
+            }
+            @if (!isAuthorOfTheJob && !hasApplied && !User.IsAdmin())
+            {
+                <div class="mt-3">
+                    <div class="fw-bold mb-2">Please upload your CV as PDF file!</div>
+                    @using (Html.BeginForm(actionName: "ApplyForJob", controllerName: "User", method: FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.HiddenFor(x => x.Id)
+                        <input type="file" name="upload"/>
+                        <button type="submit" class="btn btn-primary" name="button">Apply</button>
+                    }
+                </div>
+            }
+            @if (hasApplied)
+            {
+                <p></p>
+                <div class="fw-bold">You have already applied for that job!</div>
+                <a class="w-auto btn btn-primary mt-1" asp-area="" asp-controller="User" asp-action="MyApplications">Go to applications</a>
+            }
         </div>
     </div>
 </div>
