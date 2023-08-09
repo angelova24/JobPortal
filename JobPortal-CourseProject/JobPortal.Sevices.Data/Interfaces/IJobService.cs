@@ -19,7 +19,7 @@
 
         Task DeleteJobByIdAsync(string jobId);
         
-        Task<bool> CandidatureExistsAsync(string jobId, string candidateId);
+        Task<bool> ApplicationExistsAsync(string jobId, string candidateId);
         
         Task<string> GetCvPathAsync(string jobId, string candidateId);
     }

@@ -312,11 +312,11 @@ namespace JobPortal.Web.Controllers
                 return RedirectToAction("MyJobOffers", "Employer");
             }
 
-            var candidatureExists = await jobService.CandidatureExistsAsync(jobId, candidateId);
+            var applicationExists = await jobService.ApplicationExistsAsync(jobId, candidateId);
 
-            if (!candidatureExists)
+            if (!applicationExists)
             {
-                toastNotification.Error("Candidature was not found!");
+                toastNotification.Error("Application was not found!");
                 return RedirectToAction("Candidates", "Job", new { id = jobId });
             }
 

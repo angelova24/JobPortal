@@ -83,20 +83,20 @@
             }
         }
 
-        public async Task<bool> CandidatureExistsAsync(string jobId, string candidateId)
+        public async Task<bool> ApplicationExistsAsync(string jobId, string candidateId)
         {
-            var candidatureExists = await dbContext.UserJobs
+            var applicationExists = await dbContext.UserJobs
                 .AnyAsync(uj => uj.JobId.ToString() == jobId && uj.CandidateId.ToString() == candidateId);
 
-            return candidatureExists;
+            return applicationExists;
         }
 
         public async Task<string> GetCvPathAsync(string jobId, string candidateId)
         {
-            var candidature = await dbContext.UserJobs
+            var application = await dbContext.UserJobs
                 .FirstAsync(uj => uj.JobId.ToString() == jobId && uj.CandidateId.ToString() == candidateId);
 
-            return candidature.FilePath;
+            return application.FilePath;
         }
 
         public async Task<JobsFilteredAndPagedServiceModel> GetAllJobsAsync(JobsQueryModel queryModel)

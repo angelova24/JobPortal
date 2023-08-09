@@ -14,8 +14,6 @@
         Task<string> GetFullNameByEmailAsync(string email);
         
         Task<IEnumerable<UserViewModel>> GetAllAsync();
-
-        Task<bool> ApplicationExistsAsync(string userId, string jobId);
         
         Task DeleteApplicationAsync(string userId, string jobId);
     }

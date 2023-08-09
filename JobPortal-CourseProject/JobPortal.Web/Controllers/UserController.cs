@@ -197,7 +197,7 @@ namespace JobPortal.Web.Controllers
                 return RedirectToAction("MyApplications", "User");
             }
 
-            var applicationExists = await userService.ApplicationExistsAsync(User.GetId()!, id);
+            var applicationExists = await jobService.ApplicationExistsAsync(id, User.GetId()!);
 
             if (applicationExists)
             {

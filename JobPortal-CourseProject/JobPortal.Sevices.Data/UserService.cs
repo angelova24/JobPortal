@@ -89,19 +89,6 @@
             return allUsers;
         }
 
-        public async Task<bool> ApplicationExistsAsync(string userId, string jobId)
-        {
-            var application = await dbContext.UserJobs
-                .FirstOrDefaultAsync(uj => uj.CandidateId.ToString() == userId &&
-                                           uj.JobId.ToString() == jobId);
-            if (application == null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         public async Task DeleteApplicationAsync(string userId, string jobId)
         {
             var application = await dbContext.UserJobs
