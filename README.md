@@ -8,8 +8,11 @@
 
 ## Description
 
-JobPortal is a course project for my studies at [SoftUni](https://softuni.bg/)
-and is a simple solution for searching and uploading job offers and also for reading articles.
+JobPortal is a course project for my studies at [SoftUni](https://softuni.bg/).\
+It is a simple solution for searching and uploading job offers and also for reading articles.\
+Users can apply for jobs by uploading CV, they also can become employers.\
+Employers are users which can upload and manage job offers and see all appliers and their CVs.\
+Admins can only mange the job offers and upload and manage articles.
 
 ## Installation
 
