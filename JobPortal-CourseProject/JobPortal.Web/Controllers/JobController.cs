@@ -262,6 +262,7 @@ namespace JobPortal.Web.Controllers
             }
         }
         
+        [HttpGet]
         public async Task<IActionResult> Candidates(string id)
         {
             var jobExists = await jobService.ExistsByIdAsync(id);
@@ -284,6 +285,49 @@ namespace JobPortal.Web.Controllers
             {
                 var model = await employerService.GetAllCandidatesByJobIdAsync(id);
                 return View(model);
+            }
+            catch (Exception)
+            {
+                return GeneralError();
+            }
+        }
+        
+        [HttpGet]
+        [Route("CV_{fullName}")]
+        public async Task<IActionResult> DownloadCv(string jobId, string candidateId, string fullName)
+        {
+            var isUserEmployer = await employerService.EmployerExistsByUserIdAsync(User.GetId()!);
+
+            if (!isUserEmployer)
+            {
+                toastNotification.Error("You must be an employer in order to download a CV!");
+                return RedirectToAction("Become", "Employer");
+            }
+            
+            var isAuthorOfJob = await employerService.IsAuthorOfJobByUserIdAsync(User.GetId()!, jobId);
+
+            if (!isAuthorOfJob)
+            {
+                toastNotification.Error("You must be the author of the job in order to download a CV!");
+                return RedirectToAction("MyJobOffers", "Employer");
+            }
+
+            var candidatureExists = await jobService.CandidatureExistsAsync(jobId, candidateId);
+
+            if (!candidatureExists)
+            {
+                toastNotification.Error("Candidature was not found!");
+                return RedirectToAction("Candidates", "Job", new { id = jobId });
+            }
+
+            try
+            {
+                var filePath = await jobService.GetCvPathAsync(jobId, candidateId);
+                //Read the File data into Byte Array.
+                var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+                //Send the File to Download.
+                return File(bytes, "application/pdf");
+
             }
             catch (Exception)
             {

@@ -1,7 +1,7 @@
 ﻿namespace JobPortal.Sevices.Data.Interfaces
 {
     using JobPortal.Services.Data.Models.Job;
-    using JobPortal.Web.ViewModels.Job;
+    using Web.ViewModels.Job;
 
     public interface IJobService
     {
@@ -18,5 +18,9 @@
         Task EditJobById(string jobId, JobAddFormModel model);
 
         Task DeleteJobByIdAsync(string jobId);
+        
+        Task<bool> CandidatureExistsAsync(string jobId, string candidateId);
+        
+        Task<string> GetCvPathAsync(string jobId, string candidateId);
     }
 }

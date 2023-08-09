@@ -12,6 +12,7 @@
     <tr>
         <th><label>Full name</label></th>
         <th><label>Email</label></th>
+        <th><label>CV</label></th>
         <th><label>Application date</label></th>
     </tr>
     </thead>
@@ -21,6 +22,7 @@
         <tr>
             <td><label>@candidate.FullName</label></td>
             <td><label>@candidate.Email</label></td>
+            <td>@Html.ActionLink($"CV_{candidate.FullName}", "DownloadCv", new {jobId = candidate.JobId, candidateId = candidate.CandidateId, fullName = candidate.FullName})</td>
             <td><label>@candidate.ApplicationDate.ToString("dd/MM/yy HH:mm")</label></td>
         </tr>
     }

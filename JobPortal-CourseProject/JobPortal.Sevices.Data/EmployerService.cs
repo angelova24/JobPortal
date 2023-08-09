@@ -91,7 +91,8 @@
                 .Where(uj => uj.JobId.ToString() == jobId)
                 .Select(uj => new CandidateViewModel()
                 {
-                    Id = uj.CandidateId.ToString(),
+                    JobId = uj.JobId.ToString(),
+                    CandidateId = uj.CandidateId.ToString(),
                     FullName = uj.Candidate.FirstName + " " + uj.Candidate.LastName,
                     Email = uj.Candidate.Email,
                     ApplicationDate = uj.CreatedOn

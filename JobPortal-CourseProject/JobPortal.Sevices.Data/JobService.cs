@@ -13,6 +13,7 @@
     public class JobService : IJobService
     {
         private readonly JobPortalDbContext dbContext;
+        
         public JobService(JobPortalDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -80,6 +81,22 @@
                 dbContext.Jobs.Remove(job);
                 await dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> CandidatureExistsAsync(string jobId, string candidateId)
+        {
+            var candidatureExists = await dbContext.UserJobs
+                .AnyAsync(uj => uj.JobId.ToString() == jobId && uj.CandidateId.ToString() == candidateId);
+
+            return candidatureExists;
+        }
+
+        public async Task<string> GetCvPathAsync(string jobId, string candidateId)
+        {
+            var candidature = await dbContext.UserJobs
+                .FirstAsync(uj => uj.JobId.ToString() == jobId && uj.CandidateId.ToString() == candidateId);
+
+            return candidature.FilePath;
         }
 
         public async Task<JobsFilteredAndPagedServiceModel> GetAllJobsAsync(JobsQueryModel queryModel)
