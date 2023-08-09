@@ -110,6 +110,7 @@
             
             if (application != null)
             {
+                File.Delete(application.FilePath); 
                 dbContext.UserJobs.Remove(application);
                 await dbContext.SaveChangesAsync();
             }
