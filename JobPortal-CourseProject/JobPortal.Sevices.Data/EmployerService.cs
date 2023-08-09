@@ -51,12 +51,7 @@
         {
             var employer = await dbContext.Employers.FirstOrDefaultAsync(e => e.UserId.ToString() == userId);
 
-            if (employer == null)
-            {
-                return null;
-            }
-
-            return employer.Id.ToString();
+            return employer?.Id.ToString();
         }
 
         public async Task<IEnumerable<JobViewModel>> GetAllJobsByEmployerIdAsync(string employerId)

@@ -1,12 +1,11 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-
-namespace JobPortal.Web.Controllers
+﻿namespace JobPortal.Web.Controllers
 {
-    using JobPortal.Sevices.Data.Interfaces;
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using Infrastructure.Extensions;
-    using ViewModels.Employer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Sevices.Data.Interfaces;
+    using ViewModels.Employer;
 
     [Authorize]
     public class EmployerController : Controller

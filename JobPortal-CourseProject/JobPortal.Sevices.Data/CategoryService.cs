@@ -1,11 +1,9 @@
 ﻿namespace JobPortal.Sevices.Data
 {
+    using Interfaces;
     using JobPortal.Data;
-    using JobPortal.Sevices.Data.Interfaces;
-    using JobPortal.Web.ViewModels.Category;
     using Microsoft.EntityFrameworkCore;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    using Web.ViewModels.Category;
 
     public class CategoryService : ICategoryService
     {
@@ -18,14 +16,14 @@
 
         public async Task<bool> ExistsByIdAsync(int id)
         {
-            var result = await this.dbContext.Categories.AnyAsync(c => c.Id == id);
+            var result = await dbContext.Categories.AnyAsync(c => c.Id == id);
 
             return result;
         }
 
         public async Task<IEnumerable<CategoryViewModel>> GetAllAsync()
         {
-            var allCategories = await this.dbContext.Categories
+            var allCategories = await dbContext.Categories
                 .Select(c => new CategoryViewModel
                 {
                     Id = c.Id,
@@ -38,7 +36,7 @@
 
         public async Task<IEnumerable<string>> GetAllCategoryNamesAsync()
         {
-            var allNames = await this.dbContext.Categories.Select(c => c.Name).ToListAsync();
+            var allNames = await dbContext.Categories.Select(c => c.Name).ToListAsync();
 
             return allNames;
         }

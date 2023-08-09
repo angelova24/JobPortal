@@ -1,17 +1,16 @@
 ﻿namespace JobPortal.Web.ViewModels.Job
 {
-    using JobPortal.Web.ViewModels.Job.Enums;
     using System.ComponentModel.DataAnnotations;
-
+    using Enums;
     using static Common.GeneralApplicationConstants;
     public class JobsQueryModel
     {
         public JobsQueryModel()
         {
-            this.CurrentPage = DefaultPage;
-            this.JobsPerPage = EntitiesPerPage;
-            this.Categories = new HashSet<string>();
-            this.Jobs = new HashSet<JobViewModel>();
+            CurrentPage = DefaultPage;
+            JobsPerPage = EntitiesPerPage;
+            Categories = new HashSet<string>();
+            Jobs = new HashSet<JobViewModel>();
         }
 
         public string? Category { get; set; }

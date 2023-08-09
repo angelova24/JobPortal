@@ -1,4 +1,3 @@
-
 namespace JobPortal.Web.Infrastructure.Extensions
 {
     using Microsoft.AspNetCore.Builder;

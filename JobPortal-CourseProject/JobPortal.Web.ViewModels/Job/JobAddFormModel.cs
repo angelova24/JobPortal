@@ -1,14 +1,14 @@
 ﻿namespace JobPortal.Web.ViewModels.Job
 {
-    using JobPortal.Web.ViewModels.Category;
     using System.ComponentModel.DataAnnotations;
-
+    using Category;
     using static Common.EntityValidationConstants.Job;
+    
     public class JobAddFormModel
     {
         public JobAddFormModel()
         {
-            this.Categories = new HashSet<CategoryViewModel>();
+            Categories = new HashSet<CategoryViewModel>();
         }
 
         [Required]

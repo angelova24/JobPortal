@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Identity;
-
 namespace JobPortal.Data.Configurations
 {
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
     using Models;
 
     public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>

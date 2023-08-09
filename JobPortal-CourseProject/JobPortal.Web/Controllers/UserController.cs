@@ -1,15 +1,14 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-
-namespace JobPortal.Web.Controllers
+﻿namespace JobPortal.Web.Controllers
 {
-    using JobPortal.Sevices.Data.Interfaces;
-    using Infrastructure.Extensions;
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using Data.Models;
-    using ViewModels.User;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Authorization;
+    using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Sevices.Data.Interfaces;
+    using ViewModels.User;
 
     [Authorize]
     public class UserController : Controller
@@ -122,7 +121,7 @@ namespace JobPortal.Web.Controllers
                 return View(model);
             }
 
-            ApplicationUser user = new ApplicationUser()
+            var user = new ApplicationUser
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName
@@ -131,12 +130,11 @@ namespace JobPortal.Web.Controllers
             await userManager.SetEmailAsync(user, model.Email);
             await userManager.SetUserNameAsync(user, model.Email);
 
-            IdentityResult result = 
-                await userManager.CreateAsync(user, model.Password);
+            var result = await userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
-                foreach (IdentityError error in result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -155,7 +153,7 @@ namespace JobPortal.Web.Controllers
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            LoginFormModel model = new LoginFormModel()
+            var model = new LoginFormModel
             {
                 ReturnUrl = returnUrl
             };

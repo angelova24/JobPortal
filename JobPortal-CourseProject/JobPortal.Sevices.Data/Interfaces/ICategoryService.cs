@@ -1,6 +1,6 @@
 ﻿namespace JobPortal.Sevices.Data.Interfaces
 {
-    using JobPortal.Web.ViewModels.Category;
+    using Web.ViewModels.Category;
 
     public interface ICategoryService
     {

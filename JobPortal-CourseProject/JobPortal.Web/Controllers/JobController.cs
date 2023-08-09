@@ -1,12 +1,11 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
-
-namespace JobPortal.Web.Controllers
+﻿namespace JobPortal.Web.Controllers
 {
-    using JobPortal.Sevices.Data.Interfaces;
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using Infrastructure.Extensions;
-    using ViewModels.Job;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Sevices.Data.Interfaces;
+    using ViewModels.Job;
 
     [Authorize]
     public class JobController : Controller
@@ -16,7 +15,10 @@ namespace JobPortal.Web.Controllers
         private readonly IEmployerService employerService;
         private readonly INotyfService toastNotification;
 
-        public JobController(IJobService jobService, ICategoryService categoryService, IEmployerService employerService, INotyfService toastNotification)
+        public JobController(IJobService jobService,
+            ICategoryService categoryService,
+            IEmployerService employerService,
+            INotyfService toastNotification)
         {
             this.jobService = jobService;
             this.categoryService = categoryService;
@@ -57,7 +59,7 @@ namespace JobPortal.Web.Controllers
 
             try
             {
-                var formModel = new JobAddFormModel()
+                var formModel = new JobAddFormModel
                 {
                     Categories = await categoryService.GetAllAsync()
                 };

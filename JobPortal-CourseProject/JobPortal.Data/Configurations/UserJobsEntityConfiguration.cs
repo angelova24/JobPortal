@@ -1,8 +1,8 @@
 ﻿namespace JobPortal.Data.Configurations
 {
-    using JobPortal.Data.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Models;
 
     public class UserJobsEntityConfiguration : IEntityTypeConfiguration<UserJobs>
     {

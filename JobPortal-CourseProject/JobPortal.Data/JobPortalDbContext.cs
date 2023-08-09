@@ -1,11 +1,11 @@
 ﻿namespace JobPortal.Data
 {
-    using JobPortal.Data.Models;
-    using JobPortal.Data.Models.Interfaces;
+    using System.Reflection;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using System.Reflection;
+    using Models;
+    using Models.Interfaces;
 
     public class JobPortalDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {

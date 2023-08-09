@@ -2,6 +2,7 @@
 {
     using System.Security.Claims;
     using static Common.GeneralApplicationConstants;
+    
     public static class ClaimsPrincipalExtensions
     {
         public static string? GetId (this ClaimsPrincipal user)

@@ -1,12 +1,12 @@
 ﻿namespace JobPortal.Services.Data.Models.Job
 {
-    using JobPortal.Web.ViewModels.Job;
+    using Web.ViewModels.Job;
 
     public class JobsFilteredAndPagedServiceModel
     {
         public JobsFilteredAndPagedServiceModel()
         {
-            this.Jobs = new HashSet<JobViewModel>();
+            Jobs = new HashSet<JobViewModel>();
         }
 
         public int JobsCount { get; set; }
