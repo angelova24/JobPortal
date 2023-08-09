@@ -1,15 +1,15 @@
 ﻿namespace JobPortal.Data.Models
 {
-    using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Identity;
     using static Common.EntityValidationConstants.User;
 
     public class ApplicationUser : IdentityUser<Guid>
     {
         public ApplicationUser()
         {
-            this.Id = Guid.NewGuid();
-            this.JobApplications = new HashSet<UserJobs>();
+            Id = Guid.NewGuid();
+            JobApplications = new HashSet<UserJobs>();
         }
         
         [Required]

@@ -7,7 +7,7 @@ namespace JobPortal.Data.Models
     {
         public Article()
         {
-            this.Id = Guid.NewGuid();
+            Id = Guid.NewGuid();
         }
 
         [Key]

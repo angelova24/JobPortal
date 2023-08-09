@@ -1,16 +1,15 @@
 ﻿namespace JobPortal.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using JobPortal.Data.Models.Interfaces;
-
+    using Interfaces;
     using static Common.EntityValidationConstants.Job;
 
     public class Job : ISoftDeletable
     {
         public Job()
         {
-            this.Id = Guid.NewGuid();
-            this.Candidates = new HashSet<UserJobs>();
+            Id = Guid.NewGuid();
+            Candidates = new HashSet<UserJobs>();
         }
 
         [Key]

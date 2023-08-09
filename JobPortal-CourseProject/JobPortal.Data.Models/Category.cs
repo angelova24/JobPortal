@@ -1,14 +1,13 @@
 ﻿namespace JobPortal.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-
     using static Common.EntityValidationConstants.Category;
 
     public class Category
     {
         public Category()
         {
-            this.Jobs = new HashSet<Job>();       
+            Jobs = new HashSet<Job>();       
         }
 
         [Key]

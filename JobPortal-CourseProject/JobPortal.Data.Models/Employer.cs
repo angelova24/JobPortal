@@ -1,14 +1,14 @@
 ﻿namespace JobPortal.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-
     using static Common.EntityValidationConstants.Employer;
+    
     public class Employer
     {
         public Employer()
         {
-            this.Id = Guid.NewGuid();
-            this.JobOffers = new HashSet<Job>();
+            Id = Guid.NewGuid();
+            JobOffers = new HashSet<Job>();
         }
 
         [Key]
