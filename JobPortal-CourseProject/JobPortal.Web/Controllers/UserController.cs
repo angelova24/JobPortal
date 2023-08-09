@@ -66,7 +66,13 @@ namespace JobPortal.Web.Controllers
             }
             
             if (upload != null && upload.Length > 0)
-            {                
+            {
+                if (upload.ContentType != "application/pdf")
+                {
+                    toastNotification.Error("Please upload a PDF file!");
+                    return RedirectToAction("Details", "Job", new { id });
+                }
+                
                 var fileName = Path.GetFileName(upload.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/CVs", fileName);
                 
@@ -85,7 +91,9 @@ namespace JobPortal.Web.Controllers
                     GeneralError();
                 }
             }
-            return RedirectToAction("Index", "Home");
+            
+            toastNotification.Error("Please upload a file!");
+            return RedirectToAction("Details", "Job", new { id });
         }
 
         [HttpGet]
