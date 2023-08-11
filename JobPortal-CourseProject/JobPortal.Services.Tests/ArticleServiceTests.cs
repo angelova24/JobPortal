@@ -2,7 +2,6 @@ namespace JobPortal.Services.Tests
 {
     using JobPortal.Data;
     using Microsoft.EntityFrameworkCore;
-    using Moq.Language;
     using Sevices.Data;
     using Web.ViewModels.Article;
 
@@ -127,6 +126,24 @@ namespace JobPortal.Services.Tests
             var result = await dbContext.Articles.FirstOrDefaultAsync(a => a.Id == article.Id);
             
             Assert.That(result, Is.Null);
+        }
+        
+        [Test]
+        public async Task GetAllAsyncShouldReturnArticles()
+        {
+            var result = await articleService.GetAllAsync();
+
+            Assert.That(result, Is.Not.Null);
+        }
+        
+        [Test]
+        public async Task GetAllByAuthorIdAsyncShouldReturnArticles()
+        {
+            var article = await dbContext.Articles.FirstAsync();
+            
+            var result = await articleService.GetAllByAuthorIdAsync(article.AuthorId.ToString());
+
+            Assert.That(result, Is.Not.Null);
         }
     }
 }
