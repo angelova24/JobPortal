@@ -115,7 +115,9 @@
                 jobsQuery = jobsQuery
                     .Where(j => EF.Functions.Like(j.Title, wildcard) || 
                                 EF.Functions.Like(j.Description, wildcard) ||
-                                EF.Functions.Like(j.Requirements, wildcard));
+                                EF.Functions.Like(j.Requirements, wildcard) ||
+                                EF.Functions.Like(j.Employer.CompanyAddress, wildcard) ||
+                                EF.Functions.Like(j.Employer.CompanyName, wildcard));
             }
 
             jobsQuery = queryModel.JobSorting switch
