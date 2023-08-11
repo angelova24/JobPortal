@@ -1,9 +1,11 @@
 ﻿namespace JobPortal.Web.Controllers
 {
     using AspNetCoreHero.ToastNotification.Abstractions;
+    using Hubs;
     using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
     using Sevices.Data.Interfaces;
     using ViewModels.Job;
 
@@ -14,16 +16,19 @@
         private readonly ICategoryService categoryService;
         private readonly IEmployerService employerService;
         private readonly INotyfService toastNotification;
+        private readonly IHubContext<UpdateHub> hubContext;
 
         public JobController(IJobService jobService,
             ICategoryService categoryService,
             IEmployerService employerService,
-            INotyfService toastNotification)
+            INotyfService toastNotification,
+            IHubContext<UpdateHub> hubContext)
         {
             this.jobService = jobService;
             this.categoryService = categoryService;
             this.employerService = employerService;
             this.toastNotification = toastNotification;
+            this.hubContext = hubContext;
         }
 
         [HttpGet]
@@ -98,9 +103,10 @@
             try
             {
                 var employerId = await employerService.GetEmployerIdByUserIdAsync(User.GetId()!);
-                string jobId = await jobService.CreateAndReturnIdAsync(employerId!, model);
+                var jobId = await jobService.CreateAndReturnIdAsync(employerId!, model);
                 
                 toastNotification.Success("Job was added successfully!");
+                await hubContext.Clients.All.SendAsync("UpdateJobs");
                 return RedirectToAction("Details", "Job", new { id = jobId });
             }
             catch (Exception)
@@ -222,6 +228,7 @@
             }
             
             toastNotification.Success("Job was edited successfully!");
+            await hubContext.Clients.All.SendAsync("UpdateJobs");
             return RedirectToAction("Details", "Job", new {id});
         }
 
@@ -256,6 +263,7 @@
             {
                 await jobService.DeleteJobByIdAsync(id);
                 toastNotification.Success("Job was deleted successfully!");
+                await hubContext.Clients.All.SendAsync("UpdateJobs");
                 return RedirectToAction("MyJobOffers", "Employer");
             }
             catch (Exception)
@@ -336,7 +344,7 @@
                 return GeneralError();
             }
         }
-        
+
         private IActionResult GeneralError()
         {
             toastNotification.Error("Unexpected error occurred! Please try again later or contact administrator");

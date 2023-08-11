@@ -4,6 +4,7 @@ using JobPortal.Data;
 using JobPortal.Data.Models;
 using JobPortal.Sevices.Data;
 using JobPortal.Sevices.Data.Interfaces;
+using JobPortal.Web.Hubs;
 using JobPortal.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,7 @@ builder.Services.AddNotyf(config =>
     config.Position = NotyfPosition.BottomCenter;
 });
 
+builder.Services.AddSignalR();
 builder.Services.AddMarkdown();
 builder.Services.AddMvc()
     .AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
@@ -106,5 +108,7 @@ app.UseEndpoints(config =>
     config.MapDefaultControllerRoute();
     config.MapRazorPages();
 });
+
+app.MapHub<UpdateHub>("/update");
 
 app.Run();
