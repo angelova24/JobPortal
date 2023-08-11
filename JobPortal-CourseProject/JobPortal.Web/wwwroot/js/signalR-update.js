@@ -20,7 +20,20 @@ connection.on("UpdateJobs", function () {
         url: '/Job/All/',
         data: model,
         success: function (response) {
-            console.log("Success");
+            document.body.innerHTML = response;
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+});
+
+connection.on("UpdateArticles", function () {
+
+    $.ajax({
+        type: 'GET',
+        url: '/Article/All/',
+        success: function (response) {
             document.body.innerHTML = response;
         },
         error: function (response) {

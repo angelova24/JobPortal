@@ -1,8 +1,10 @@
 namespace JobPortal.Web.Areas.Admin.Controllers
 {
     using AspNetCoreHero.ToastNotification.Abstractions;
+    using Hubs;
     using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
     using Sevices.Data.Interfaces;
     using ViewModels.Article;
 
@@ -10,11 +12,15 @@ namespace JobPortal.Web.Areas.Admin.Controllers
     {
         private readonly IArticleService articleService;
         private readonly INotyfService toastNotification;
+        private readonly IHubContext<UpdateHub> hubContext;
 
-        public ArticleController(IArticleService articleService, INotyfService toastNotification)
+        public ArticleController(IArticleService articleService,
+            INotyfService toastNotification,
+            IHubContext<UpdateHub> hubContext)
         {
             this.articleService = articleService;
             this.toastNotification = toastNotification;
+            this.hubContext = hubContext;
         }
 
         [HttpGet]
@@ -37,6 +43,7 @@ namespace JobPortal.Web.Areas.Admin.Controllers
                 var jobId = await articleService.CreateAndReturnIdAsync(userId, model);
                 
                 toastNotification.Success("Article was added successfully!");
+                await hubContext.Clients.All.SendAsync("UpdateArticles");
                 return RedirectToAction("Read", "Article", new { Area = "", id = jobId });
             }
             catch (Exception)
@@ -97,6 +104,7 @@ namespace JobPortal.Web.Areas.Admin.Controllers
             }
             
             toastNotification.Success("Article was edited successfully!");
+            await hubContext.Clients.All.SendAsync("UpdateArticles");
             return RedirectToAction("Read", "Article", new { Area = "", id});
         }
         
@@ -123,6 +131,7 @@ namespace JobPortal.Web.Areas.Admin.Controllers
             {
                 await articleService.DeleteArticleByIdAsync(id);
                 toastNotification.Success("Article was deleted successfully!");
+                await hubContext.Clients.All.SendAsync("UpdateArticles");
                 return RedirectToAction("MyArticles", "Article");
             }
             catch (Exception)
