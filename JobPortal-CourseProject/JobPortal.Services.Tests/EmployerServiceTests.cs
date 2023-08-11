@@ -120,5 +120,15 @@
 
             Assert.That(result, Is.False);
         }
+        
+        [Test]
+        public async Task GetCategoryNamesShouldReturnCategories()
+        {
+            var job = await dbContext.Jobs.FirstAsync();
+            
+            var result = await employerService.GetAllJobsByEmployerIdAsync(job.EmployerId.ToString());
+
+            Assert.That(result, Is.Not.Null);
+        }
     }
 }
